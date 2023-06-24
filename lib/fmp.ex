@@ -1,5 +1,6 @@
 defmodule FMP do
-  alias FMP.Executive
+  alias FMP.IncomeStatement
+  alias FMP.KeyExecutive
   alias FMP.MarketCap
   alias FMP.Peers
   alias FMP.Profile
@@ -7,23 +8,24 @@ defmodule FMP do
   @base_url "https://financialmodelingprep.com/api"
 
   @doc """
-  Fetches a company profile from the FMP API.
+  Fetches a company's income statements from the FMP API.
 
   ## Examples
 
-    iex> {:ok, profile} = FMP.get_profile("AAPL")
-    iex> profile.symbol
-    "AAPL"
+    iex> {:ok, income_statements} = FMP.get_income_statements("AAPL")
+    iex> Enum.count(income_statements) > 0
+    true
   """
-  def get_profile(symbol) do
-    resp = get("#{@base_url}/v3/profile/#{symbol}")
+  def get_income_statements(symbol, params \\ []) do
+    url = url_with_params("#{@base_url}/v3/income-statement/#{symbol}", params)
+    resp = get(url)
 
     case resp do
       {:ok, []} ->
         {:error, :not_found}
 
       {:ok, resp} ->
-        {:ok, Profile.from_json(resp)}
+        {:ok, IncomeStatement.from_json(resp)}
 
       _ ->
         resp
@@ -47,7 +49,7 @@ defmodule FMP do
         {:error, :not_found}
 
       {:ok, resp} ->
-        {:ok, Executive.from_json(resp)}
+        {:ok, KeyExecutive.from_json(resp)}
 
       _ ->
         resp
@@ -87,14 +89,8 @@ defmodule FMP do
     iex> market_cap.symbol
     "AAPL"
   """
-  def get_historical_market_cap(symbol, limit \\ nil) do
-    url =
-      if limit do
-        "#{@base_url}/v3/historical-market-capitalization/#{symbol}?limit=#{limit}"
-      else
-        "#{@base_url}/v3/historical-market-capitalization/#{symbol}"
-      end
-
+  def get_historical_market_cap(symbol, params \\ []) do
+    url = url_with_params("#{@base_url}/v3/historical-market-capitalization/#{symbol}", params)
     resp = get(url)
 
     case resp do
@@ -133,8 +129,32 @@ defmodule FMP do
     end
   end
 
+  @doc """
+  Fetches a company profile from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, profile} = FMP.get_profile("AAPL")
+    iex> profile.symbol
+    "AAPL"
+  """
+  def get_profile(symbol) do
+    resp = get("#{@base_url}/v3/profile/#{symbol}")
+
+    case resp do
+      {:ok, []} ->
+        {:error, :not_found}
+
+      {:ok, resp} ->
+        {:ok, Profile.from_json(resp)}
+
+      _ ->
+        resp
+    end
+  end
+
   @doc false
-  def get(url) do
+  defp get(url) do
     api_key = Application.get_env(:fmp_client, :api_key)
 
     url =
@@ -154,5 +174,14 @@ defmodule FMP do
       {:error, %HTTPoison.Error{reason: reason}} ->
         {:error, reason}
     end
+  end
+
+  @doc false
+  defp url_with_params(url, params) do
+    queries =
+      Enum.map(params, fn {k, v} -> "#{k}=#{v}" end)
+      |> Enum.join("&")
+
+    (queries == "" && url) || "#{url}?#{queries}"
   end
 end

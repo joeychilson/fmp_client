@@ -1,4 +1,4 @@
-defmodule FMP.Executive do
+defmodule FMP.KeyExecutive do
   defstruct [
     :title,
     :name,
@@ -11,7 +11,7 @@ defmodule FMP.Executive do
 
   def from_json(list) do
     Enum.map(list, fn executive ->
-      %FMP.Executive{
+      %FMP.KeyExecutive{
         title: executive["title"],
         name: executive["name"],
         pay: executive["pay"],
