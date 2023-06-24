@@ -5,7 +5,8 @@ defmodule FMP do
   alias FMP.Peers
   alias FMP.Profile
 
-  @base_url "https://financialmodelingprep.com/api"
+  @api_v3 "https://financialmodelingprep.com/api/v3"
+  @api_v4 "https://financialmodelingprep.com/api/v4"
 
   @doc """
   Fetches a company's income statements from the FMP API.
@@ -15,9 +16,13 @@ defmodule FMP do
     iex> {:ok, income_statements} = FMP.get_income_statements("AAPL")
     iex> Enum.count(income_statements) > 0
     true
+
+    iex> {:ok, income_statements} = FMP.get_income_statements("AAPL", period: "quarter", limit: 1)
+    iex> Enum.count(income_statements) == 1
+    true
   """
   def get_income_statements(symbol, params \\ []) do
-    url = url_with_params("#{@base_url}/v3/income-statement/#{symbol}", params)
+    url = url_with_params("#{@api_v3}/income-statement/#{symbol}", params)
     resp = get(url)
 
     case resp do
@@ -42,7 +47,7 @@ defmodule FMP do
     true
   """
   def get_key_executives(symbol) do
-    resp = get("#{@base_url}/v3/key-executives/#{symbol}")
+    resp = get("#{@api_v3}/key-executives/#{symbol}")
 
     case resp do
       {:ok, []} ->
@@ -66,7 +71,7 @@ defmodule FMP do
     "AAPL"
   """
   def get_market_cap(symbol) do
-    resp = get("#{@base_url}/v3/market-capitalization/#{symbol}")
+    resp = get("#{@api_v3}/market-capitalization/#{symbol}")
 
     case resp do
       {:ok, []} ->
@@ -86,11 +91,15 @@ defmodule FMP do
   ## Examples
 
     iex> {:ok, market_cap} = FMP.get_historical_market_cap("AAPL")
-    iex> market_cap.symbol
-    "AAPL"
+    iex> Enum.count(market_cap) > 0
+    true
+
+    iex> {:ok, market_cap} = FMP.get_historical_market_cap("AAPL", limit: 1)
+    iex> Enum.count(market_cap) == 1
+    true
   """
   def get_historical_market_cap(symbol, params \\ []) do
-    url = url_with_params("#{@base_url}/v3/historical-market-capitalization/#{symbol}", params)
+    url = url_with_params("#{@api_v3}/historical-market-capitalization/#{symbol}", params)
     resp = get(url)
 
     case resp do
@@ -115,7 +124,7 @@ defmodule FMP do
     "AAPL"
   """
   def get_peers(symbol) do
-    resp = get("#{@base_url}/v4/stock_peers?symbol=#{symbol}")
+    resp = get("#{@api_v4}/stock_peers?symbol=#{symbol}")
 
     case resp do
       {:ok, []} ->
@@ -139,7 +148,7 @@ defmodule FMP do
     "AAPL"
   """
   def get_profile(symbol) do
-    resp = get("#{@base_url}/v3/profile/#{symbol}")
+    resp = get("#{@api_v3}/profile/#{symbol}")
 
     case resp do
       {:ok, []} ->
