@@ -1,18 +1,19 @@
 defmodule FMP do
-  alias FMP.ETFHolding
-  alias FMP.BalanceSheet
-  alias FMP.CashFlowStatement
-  alias FMP.ETF
-  alias FMP.ETFHolding
-  alias FMP.ETFExposure
-  alias FMP.ETFCountryWeight
-  alias FMP.ETFSectorWeight
-  alias FMP.IncomeStatement
-  alias FMP.KeyExecutive
-  alias FMP.MarketCap
-  alias FMP.Peers
-  alias FMP.Profile
-  alias FMP.Symbol
+  alias FMP.{
+    IncomeStatement,
+    BalanceSheet,
+    CashFlowStatement,
+    ETF,
+    ETFHolding,
+    ETFExposure,
+    ETFCountryWeight,
+    ETFSectorWeight,
+    KeyExecutive,
+    MarketCap,
+    Peers,
+    Profile,
+    Symbol
+  }
 
   @api_v3 "https://financialmodelingprep.com/api/v3"
   @api_v4 "https://financialmodelingprep.com/api/v4"
