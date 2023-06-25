@@ -56,7 +56,7 @@ defmodule FMP.BalanceSheet do
     :final_link
   ]
 
-  def from_json(list) do
+  def from_resp(list) do
     Enum.map(list, fn data ->
       %FMP.BalanceSheet{
         date: Date.from_iso8601!(data["date"]),
@@ -163,7 +163,7 @@ defmodule FMP.CashFlowStatement do
     :final_link
   ]
 
-  def from_json(list) do
+  def from_resp(list) do
     Enum.map(list, fn data ->
       %FMP.CashFlowStatement{
         date: Date.from_iso8601!(data["date"]),
@@ -255,7 +255,7 @@ defmodule FMP.IncomeStatement do
     :final_link
   ]
 
-  def from_json(list) do
+  def from_resp(list) do
     Enum.map(list, fn data ->
       %FMP.IncomeStatement{
         date: Date.from_iso8601!(data["date"]),

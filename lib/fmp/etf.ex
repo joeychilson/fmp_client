@@ -19,7 +19,7 @@ defmodule FMP.ETF do
     :holdings_count
   ]
 
-  def from_json([data]) do
+  def from_resp([data]) do
     %FMP.ETF{
       symbol: data["symbol"],
       asset_class: data["assetClass"],
@@ -35,7 +35,7 @@ defmodule FMP.ETF do
       name: data["name"],
       nav: data["nav"],
       nav_currency: data["navCurrency"],
-      sectors_list: FMP.ETFSector.from_json(data["sectorsList"]),
+      sectors_list: FMP.ETFSector.from_resp(data["sectorsList"]),
       website: data["website"],
       holdings_count: data["holdingsCount"]
     }
@@ -54,7 +54,7 @@ defmodule FMP.ETFHolding do
     :updated
   ]
 
-  def from_json(list) do
+  def from_resp(list) do
     Enum.map(list, fn data ->
       %FMP.ETFHolding{
         asset: data["asset"],
@@ -79,7 +79,7 @@ defmodule FMP.ETFExposure do
     :market_value
   ]
 
-  def from_json(list) do
+  def from_resp(list) do
     Enum.map(list, fn data ->
       %FMP.ETFExposure{
         etf_symbol: data["etfSymbol"],
@@ -98,7 +98,7 @@ defmodule FMP.ETFCountryWeight do
     :weight_percentage
   ]
 
-  def from_json(list) do
+  def from_resp(list) do
     Enum.map(list, fn data ->
       %FMP.ETFCountryWeight{
         country: data["country"],
@@ -114,7 +114,7 @@ defmodule FMP.ETFSector do
     :exposure
   ]
 
-  def from_json(list) do
+  def from_resp(list) do
     Enum.map(list, fn data ->
       %FMP.ETFSector{
         industry: data["industry"],
@@ -130,7 +130,7 @@ defmodule FMP.ETFSectorWeight do
     :weight_percentage
   ]
 
-  def from_json(list) do
+  def from_resp(list) do
     Enum.map(list, fn data ->
       %FMP.ETFSectorWeight{
         sector: data["sector"],

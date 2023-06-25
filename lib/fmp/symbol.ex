@@ -8,7 +8,7 @@ defmodule FMP.Symbol do
     :type
   ]
 
-  def from_json(list) do
+  def from_resp(list) do
     Enum.map(list, fn data ->
       %FMP.Symbol{
         symbol: data["symbol"],

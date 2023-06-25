@@ -38,7 +38,7 @@ defmodule FMP.Profile do
     :currency
   ]
 
-  def from_json([profile]) do
+  def from_resp([profile]) do
     %FMP.Profile{
       ceo: profile["ceo"],
       zip: profile["zip"],
@@ -91,7 +91,7 @@ defmodule FMP.KeyExecutive do
     :title_since
   ]
 
-  def from_json(list) do
+  def from_resp(list) do
     Enum.map(list, fn executive ->
       %FMP.KeyExecutive{
         title: executive["title"],
@@ -113,7 +113,7 @@ defmodule FMP.MarketCap do
     :market_cap
   ]
 
-  def from_json(list) do
+  def from_resp(list) do
     Enum.map(list, fn data ->
       %FMP.MarketCap{
         symbol: data["symbol"],
@@ -130,7 +130,7 @@ defmodule FMP.Peers do
     :list
   ]
 
-  def from_json([peers]) do
+  def from_resp([peers]) do
     %FMP.Peers{
       symbol: peers["symbol"],
       list: peers["peersList"]
