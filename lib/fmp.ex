@@ -1,4 +1,6 @@
 defmodule FMP do
+  alias FMP.BalanceSheet
+  alias FMP.CashFlowStatement
   alias FMP.IncomeStatement
   alias FMP.KeyExecutive
   alias FMP.MarketCap
@@ -13,7 +15,7 @@ defmodule FMP do
 
   ## Examples
 
-    iex> {:ok, income_statements} = FMP.get_income_statements("AAPL")
+    iex> {:ok, income_statements} = FMP.get_income_statements("320193")
     iex> Enum.count(income_statements) > 0
     true
 
@@ -21,8 +23,8 @@ defmodule FMP do
     iex> Enum.count(income_statements) == 1
     true
   """
-  def get_income_statements(symbol, params \\ []) do
-    url = url_with_params("#{@api_v3}/income-statement/#{symbol}", params)
+  def get_income_statements(cik_or_symbol, params \\ []) do
+    url = url_with_params("#{@api_v3}/income-statement/#{cik_or_symbol}", params)
     resp = get(url)
 
     case resp do
@@ -31,6 +33,64 @@ defmodule FMP do
 
       {:ok, resp} ->
         {:ok, IncomeStatement.from_json(resp)}
+
+      _ ->
+        resp
+    end
+  end
+
+  @doc """
+  Fetches a company's balance sheets from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, balance_sheets} = FMP.get_balance_sheets("320193")
+    iex> Enum.count(balance_sheets) > 0
+    true
+
+    iex> {:ok, balance_sheets} = FMP.get_balance_sheets("AAPL", period: "quarter", limit: 1)
+    iex> Enum.count(balance_sheets) == 1
+    true
+  """
+  def get_balance_sheets(cik_or_symbol, params \\ []) do
+    url = url_with_params("#{@api_v3}/balance-sheet-statement/#{cik_or_symbol}", params)
+    resp = get(url)
+
+    case resp do
+      {:ok, []} ->
+        {:error, :not_found}
+
+      {:ok, resp} ->
+        {:ok, BalanceSheet.from_json(resp)}
+
+      _ ->
+        resp
+    end
+  end
+
+  @doc """
+  Fetches a company's cash flow statements from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, cash_flow} = FMP.get_cash_flow_statements("320193")
+    iex> Enum.count(cash_flow) > 0
+    true
+
+    iex> {:ok, cash_flow} = FMP.get_cash_flow_statements("AAPL", period: "quarter", limit: 1)
+    iex> Enum.count(cash_flow) == 1
+    true
+  """
+  def get_cash_flow_statements(cik_or_symbol, params \\ []) do
+    url = url_with_params("#{@api_v3}/cash-flow-statement/#{cik_or_symbol}", params)
+    resp = get(url)
+
+    case resp do
+      {:ok, []} ->
+        {:error, :not_found}
+
+      {:ok, resp} ->
+        {:ok, CashFlowStatement.from_json(resp)}
 
       _ ->
         resp
@@ -165,6 +225,9 @@ defmodule FMP do
   @doc false
   defp get(url) do
     api_key = Application.get_env(:fmp_client, :api_key)
+    if api_key == nil do
+      {:error, :api_key_not_set}
+    end
 
     url =
       if String.contains?(url, "?") do
