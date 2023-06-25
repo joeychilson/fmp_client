@@ -79,3 +79,61 @@ defmodule FMP.Profile do
     }
   end
 end
+
+defmodule FMP.KeyExecutive do
+  defstruct [
+    :title,
+    :name,
+    :pay,
+    :currency_pay,
+    :gender,
+    :year_born,
+    :title_since
+  ]
+
+  def from_json(list) do
+    Enum.map(list, fn executive ->
+      %FMP.KeyExecutive{
+        title: executive["title"],
+        name: executive["name"],
+        pay: executive["pay"],
+        currency_pay: executive["currencyPay"],
+        gender: executive["gender"],
+        year_born: executive["yearBorn"],
+        title_since: executive["titleSince"]
+      }
+    end)
+  end
+end
+
+defmodule FMP.MarketCap do
+  defstruct [
+    :symbol,
+    :date,
+    :market_cap
+  ]
+
+  def from_json(list) do
+    Enum.map(list, fn data ->
+      %FMP.MarketCap{
+        symbol: data["symbol"],
+        date: Date.from_iso8601!(data["date"]),
+        market_cap: data["marketCap"]
+      }
+    end)
+  end
+end
+
+defmodule FMP.Peers do
+  defstruct [
+    :symbol,
+    :list
+  ]
+
+  def from_json([peers]) do
+    %FMP.Peers{
+      symbol: peers["symbol"],
+      list: peers["peersList"]
+    }
+  end
+end

@@ -1,6 +1,12 @@
 defmodule FMP do
+  alias FMP.ETFHolding
   alias FMP.BalanceSheet
   alias FMP.CashFlowStatement
+  alias FMP.ETF
+  alias FMP.ETFHolding
+  alias FMP.ETFExposure
+  alias FMP.ETFCountryWeight
+  alias FMP.ETFSectorWeight
   alias FMP.IncomeStatement
   alias FMP.KeyExecutive
   alias FMP.MarketCap
@@ -295,9 +301,130 @@ defmodule FMP do
     end
   end
 
+  @doc """
+  Fetches information about an ETF from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, etf} = FMP.get_etf("SPY")
+    iex> etf.symbol
+    "SPY"
+  """
+  def get_etf(symbol) do
+    resp = get("#{@api_v4}/etf-info?symbol=#{symbol}")
+
+    case resp do
+      {:ok, []} ->
+        {:error, :not_found}
+
+      {:ok, resp} ->
+        {:ok, ETF.from_json(resp)}
+
+      _ ->
+        resp
+    end
+  end
+
+  @doc """
+  Fetches the holdings of an ETF from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, holdings} = FMP.get_etf_holdings("SPY")
+    iex> Enum.count(holdings) > 0
+    true
+  """
+  def get_etf_holdings(symbol) do
+    resp = get("#{@api_v3}/etf-holder/#{symbol}")
+
+    case resp do
+      {:ok, []} ->
+        {:error, :not_found}
+
+      {:ok, resp} ->
+        {:ok, ETFHolding.from_json(resp)}
+
+      _ ->
+        resp
+    end
+  end
+
+  @doc """
+  Fetches the stock exposure of an ETF from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, stock_exposure} = FMP.get_etf_stock_exposure("SPY")
+    iex> Enum.count(stock_exposure) > 0
+    true
+  """
+  def get_etf_stock_exposure(symbol) do
+    resp = get("#{@api_v3}/etf-stock-exposure/#{symbol}")
+
+    case resp do
+      {:ok, []} ->
+        {:error, :not_found}
+
+      {:ok, resp} ->
+        {:ok, ETFExposure.from_json(resp)}
+
+      _ ->
+        resp
+    end
+  end
+
+  @doc """
+  Fetches the country weightings of an ETF from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, country_weightings} = FMP.get_etf_country_weightings("SPY")
+    iex> Enum.count(country_weightings) > 0
+    true
+  """
+  def get_etf_country_weightings(symbol) do
+    resp = get("#{@api_v3}/etf-country-weightings/#{symbol}")
+
+    case resp do
+      {:ok, []} ->
+        {:error, :not_found}
+
+      {:ok, resp} ->
+        {:ok, ETFCountryWeight.from_json(resp)}
+
+      _ ->
+        resp
+    end
+  end
+
+  @doc """
+  Fetches the sector weightings of an ETF from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, sector_weightings} = FMP.get_etf_sector_weightings("SPY")
+    iex> Enum.count(sector_weightings) > 0
+    true
+  """
+  def get_etf_sector_weightings(symbol) do
+    resp = get("#{@api_v3}/etf-sector-weightings/#{symbol}")
+
+    case resp do
+      {:ok, []} ->
+        {:error, :not_found}
+
+      {:ok, resp} ->
+        {:ok, ETFSectorWeight.from_json(resp)}
+
+      _ ->
+        resp
+    end
+  end
+
   @doc false
   defp get(url) do
     api_key = Application.get_env(:fmp_client, :api_key)
+
     if api_key == nil do
       {:error, :api_key_not_set}
     end
