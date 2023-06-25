@@ -6,6 +6,7 @@ defmodule FMP do
   alias FMP.MarketCap
   alias FMP.Peers
   alias FMP.Profile
+  alias FMP.Symbol
 
   @api_v3 "https://financialmodelingprep.com/api/v3"
   @api_v4 "https://financialmodelingprep.com/api/v4"
@@ -216,6 +217,78 @@ defmodule FMP do
 
       {:ok, resp} ->
         {:ok, Profile.from_json(resp)}
+
+      _ ->
+        resp
+    end
+  end
+
+  @doc """
+  Fetches the symbols of all companies from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, symbols} = FMP.get_symbols()
+    iex> Enum.count(symbols) > 0
+    true
+  """
+  def get_symbols() do
+    resp = get("#{@api_v3}/stock/list")
+
+    case resp do
+      {:ok, []} ->
+        {:error, :not_found}
+
+      {:ok, resp} ->
+        {:ok, Symbol.from_json(resp)}
+
+      _ ->
+        resp
+    end
+  end
+
+  @doc """
+  Fetches the symbols of all tradable companies from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, symbols} = FMP.get_tradable_symbols()
+    iex> Enum.count(symbols) > 0
+    true
+  """
+  def get_tradable_symbols() do
+    resp = get("#{@api_v3}/available-traded/list")
+
+    case resp do
+      {:ok, []} ->
+        {:error, :not_found}
+
+      {:ok, resp} ->
+        {:ok, Symbol.from_json(resp)}
+
+      _ ->
+        resp
+    end
+  end
+
+  @doc """
+  Fetches the symbols of all ETFs from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, symbols} = FMP.get_etfs()
+    iex> Enum.count(symbols) > 0
+    true
+  """
+  def get_etfs() do
+    resp = get("#{@api_v3}/etf/list")
+
+    case resp do
+      {:ok, []} ->
+        {:error, :not_found}
+
+      {:ok, resp} ->
+        {:ok, Symbol.from_json(resp)}
 
       _ ->
         resp
