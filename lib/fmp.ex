@@ -51,6 +51,88 @@ defmodule FMP do
     do: get("#{@api_v3}/cash-flow-statement/#{cik_or_symbol}", params)
 
   @doc """
+  Fetches a company's revenue product segmentation from the FMP API.
+
+  The response is not the same as the API documentation. We reshape the data to make it easier to work with.
+
+  ## Examples
+
+    iex> {:ok, product_segmentation} = FMP.get_product_segmentation("AAPL")
+    iex> Enum.count(product_segmentation) > 0
+    true
+  """
+  def get_product_segmentation(symbol) do
+    resp = get("#{@api_v4}/revenue-product-segmentation?symbol=#{symbol}&structure=flat")
+
+    case resp do
+      {:ok, data} ->
+        reshaped_data =
+          Enum.map(data, fn map ->
+            [date_product_tuple] = Map.to_list(map)
+            {date, product_data} = date_product_tuple
+
+            %{
+              date: to_string(date),
+              products:
+                Map.to_list(product_data)
+                |> Enum.map(fn {product, revenue} ->
+                  %{
+                    name: to_string(product),
+                    revenue: revenue
+                  }
+                end)
+            }
+          end)
+
+        {:ok, reshaped_data}
+
+      {:error, _} = error ->
+        error
+    end
+  end
+
+  @doc """
+  Fetches a company's revenue geographic segmentation from the FMP API.
+
+  The response is not the same as the API documentation. We reshape the data to make it easier to work with.
+
+  ## Examples
+
+    iex> {:ok, geographic_segmentation} = FMP.get_geographic_segmentation("AAPL")
+    iex> Enum.count(geographic_segmentation) > 0
+    true
+  """
+  def get_geographic_segmentation(symbol) do
+    resp = get("#{@api_v4}/revenue-geographic-segmentation?symbol=#{symbol}&structure=flat")
+
+    case resp do
+      {:ok, data} ->
+        reshaped_data =
+          Enum.map(data, fn map ->
+            [date_country_tuple] = Map.to_list(map)
+            {date, country_data} = date_country_tuple
+
+            %{
+              date: to_string(date),
+              countries:
+                Map.to_list(country_data)
+                |> Enum.map(fn {country, revenue} ->
+                  %{
+                    name: to_string(country),
+                    revenue: revenue
+                  }
+                end)
+            }
+          end)
+
+        {:ok, reshaped_data}
+
+      {:error, _} = error ->
+        error
+    end
+  end
+
+  @doc """
   Fetches a company's financial ratios from the FMP API.
 
   ## Examples
