@@ -3,6 +3,18 @@ defmodule FMP do
   @api_v4 "https://financialmodelingprep.com/api/v4"
 
   @doc """
+  Fetches a company's financial reports dates from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, dates} = FMP.get_financial_reports_dates("AAPL")
+    iex> Enum.count(dates) > 0
+    true
+  """
+  def get_financial_reports_dates(symbol),
+    do: get("#{@api_v4}/financial-reports-dates?symbol=#{symbol}")
+
+  @doc """
   Fetches a company's income statements from the FMP API.
 
   ## Examples
@@ -156,7 +168,12 @@ defmodule FMP do
     iex> scores.symbol
     "AAPL"
   """
-  def get_financial_scores(symbol), do: get("#{@api_v4}/score?symbol=#{symbol}")
+  def get_financial_scores(symbol) do
+    case get("#{@api_v4}/score?symbol=#{symbol}") do
+      {:ok, resp} -> {:ok, hd(resp)}
+      {:error, _} = error -> error
+    end
+  end
 
   @doc """
   Fetches a company's enterprise value from the FMP API.
@@ -190,7 +207,12 @@ defmodule FMP do
     iex> market_cap.symbol
     "AAPL"
   """
-  def get_market_cap(symbol), do: get("#{@api_v3}/market-capitalization/#{symbol}")
+  def get_market_cap(symbol) do
+    case get("#{@api_v3}/market-capitalization/#{symbol}") do
+      {:ok, resp} -> {:ok, hd(resp)}
+      {:error, _} = error -> error
+    end
+  end
 
   @doc """
   Fetches a company's historical market capitalization from the FMP API.
@@ -217,7 +239,12 @@ defmodule FMP do
     iex> peers.symbol
     "AAPL"
   """
-  def get_peers(symbol), do: get("#{@api_v4}/stock_peers?symbol=#{symbol}")
+  def get_peers(symbol) do
+    case get("#{@api_v4}/stock_peers?symbol=#{symbol}") do
+      {:ok, resp} -> {:ok, hd(resp)}
+      {:error, _} = error -> error
+    end
+  end
 
   @doc """
   Fetches a company profile from the FMP API.
@@ -228,7 +255,28 @@ defmodule FMP do
     iex> profile.symbol
     "AAPL"
   """
-  def get_profile(symbol), do: get("#{@api_v3}/profile/#{symbol}")
+  def get_profile(symbol) do
+    case get("#{@api_v3}/profile/#{symbol}") do
+      {:ok, resp} -> {:ok, hd(resp)}
+      {:error, _} = error -> error
+    end
+  end
+
+  @doc """
+  Fetches a company's shares float from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, shares_float} = FMP.get_shares_float("AAPL")
+    iex> shares_float.symbol
+    "AAPL"
+  """
+  def get_shares_float(symbol) do
+    case get("#{@api_v4}/shares_float?symbol=#{symbol}") do
+      {:ok, resp} -> {:ok, hd(resp)}
+      {:error, _} = error -> error
+    end
+  end
 
   @doc """
   Fetches the symbols of all companies from the FMP API.
@@ -272,7 +320,12 @@ defmodule FMP do
     iex> etf.symbol
     "SPY"
   """
-  def get_etf(symbol), do: get("#{@api_v4}/etf-info?symbol=#{symbol}")
+  def get_etf(symbol) do
+    case get("#{@api_v4}/etf-info?symbol=#{symbol}") do
+      {:ok, resp} -> {:ok, hd(resp)}
+      {:error, _} = error -> error
+    end
+  end
 
   @doc """
   Fetches the holdings of an ETF from the FMP API.
