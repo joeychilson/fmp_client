@@ -15,6 +15,46 @@ defmodule FMP do
     do: get("#{@api_v4}/financial-reports-dates?symbol=#{symbol}")
 
   @doc """
+  Fetches a list of a company's earnings call transcripts from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, transcript} = FMP.get_earnings_call_transcript("AAPL")
+    iex> Enum.count(transcript) > 0
+    true
+  """
+  def get_earnings_call_transcript(symbol),
+    do: get("#{@api_v4}/earning_call_transcript?symbol=#{symbol}")
+
+  @doc """
+  Fetches the earnings call transcripts for a company for a given year.
+
+  ## Examples
+
+    iex> {:ok, transcript} = FMP.get_earnings_call_transcript("AAPL", 2020)
+    iex> Enum.count(transcript) > 0
+    true
+  """
+  def get_earnings_call_transcript(symbol, year),
+    do: get("#{@api_v4}/batch_earning_call_transcript/#{symbol}?year=#{year}")
+
+  @doc """
+  Fetches the earnings call transcripts for a company for a given year and quarter.
+
+  ## Examples
+
+    iex> {:ok, transcript} = FMP.get_earnings_call_transcript("AAPL", 2020, 1)
+    iex> transcript.year == 2020 && transcript.quarter == 1
+    true
+  """
+  def get_earnings_call_transcript(symbol, year, quarter) do
+    case get("#{@api_v3}/earning_call_transcript/#{symbol}?year=#{year}&quarter=#{quarter}") do
+      {:ok, resp} -> {:ok, hd(resp)}
+      {:error, _} = error -> error
+    end
+  end
+
+  @doc """
   Fetches a company's income statements from the FMP API.
 
   ## Examples
@@ -370,6 +410,17 @@ defmodule FMP do
     true
   """
   def get_etf_sector_weightings(symbol), do: get("#{@api_v3}/etf-sector-weightings/#{symbol}")
+
+  @doc """
+  Fetches the SEC rss feed from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, rss_feed} = FMP.get_rss_feed()
+    iex> Enum.count(rss_feed) > 0
+    true
+  """
+  def get_rss_feed(params \\ %{}), do: get("#{@api_v3}/rss_feed", params)
 
   @doc false
   defp get(url, params \\ %{}) do
