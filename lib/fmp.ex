@@ -1,8 +1,14 @@
 defmodule FMP do
+  alias FMP.EnterpriseValue
+  alias FMP.FinancialRatios
+
   alias FMP.{
     IncomeStatement,
     BalanceSheet,
     CashFlowStatement,
+    FinancialRatios,
+    FinancialScores,
+    EnterpriseValue,
     ETF,
     ETFHolding,
     ETFExposure,
@@ -70,6 +76,46 @@ defmodule FMP do
         "#{@api_v3}/cash-flow-statement/#{cik_or_symbol}",
         params
       )
+
+  @doc """
+  Fetches a company's financial ratios from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, ratios} = FMP.get_financial_ratios("AAPL")
+    iex> Enum.count(ratios) > 0
+    true
+
+    iex> {:ok, ratios} = FMP.get_financial_ratios("AAPL", %{period: "quarter", limit: 1})
+    iex> Enum.count(ratios) == 1
+    true
+  """
+  def get_financial_ratios(symbol, params \\ %{}),
+    do: get_data(FinancialRatios, "#{@api_v3}/ratios/#{symbol}", params)
+
+  @doc """
+  Fetches a company's financial scores from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, scores} = FMP.get_financial_scores("AAPL")
+    iex> scores.symbol
+    "AAPL"
+  """
+  def get_financial_scores(symbol),
+    do: get_data(FinancialScores, "#{@api_v4}/score?symbol=#{symbol}")
+
+  @doc """
+  Fetches a company's enterprise value from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, enterprise_value} = FMP.get_enterprise_value("AAPL")
+    iex> enterprise_value.symbol
+    "AAPL"
+  """
+  def get_enterprise_value(symbol, params \\ %{}),
+    do: get_data(EnterpriseValue, "#{@api_v3}/enterprise-values/#{symbol}", params)
 
   @doc """
   Fetches a company's key executives from the FMP API.
@@ -255,7 +301,7 @@ defmodule FMP do
 
   @doc false
   defp get_data(struct, url, params \\ %{}) do
-    url = "#{url}?#{URI.encode_query(params)}"
+    url = if params == %{}, do: url, else: "#{url}?#{URI.encode_query(params)}"
 
     case get(url) do
       {:ok, []} ->
