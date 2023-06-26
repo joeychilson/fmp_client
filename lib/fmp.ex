@@ -521,6 +521,42 @@ defmodule FMP do
   def get_company_notes(symbol), do: get("#{@api_v4}/company-notes?symbol=#{symbol}")
 
   @doc """
+  Fetches a company's ESG score from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, esg_scores} = FMP.get_esg_scores("AAPL")
+    iex> Enum.count(esg_scores) > 0
+    true
+  """
+  def get_esg_scores(symbol),
+    do: get("#{@api_v4}/esg-environmental-social-governance-data?symbol=#{symbol}")
+
+  @doc """
+  Fetches a company's ESG risk rating from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, esg_risk_ratings} = FMP.get_esg_risk_ratings("AAPL")
+    iex> Enum.count(esg_risk_ratings) > 0
+    true
+  """
+  def get_esg_risk_ratings(symbol),
+    do: get("#{@api_v4}/esg-environmental-social-governance-data-ratings?symbol=#{symbol}")
+
+  @doc """
+  Fetches a sector ESG score benchmarks from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, esg_sector_benchmarks} = FMP.get_esg_sector_benchmarks(2020)
+    iex> Enum.count(esg_sector_benchmarks) > 0
+    true
+  """
+  def get_esg_sector_benchmarks(year),
+    do: get("#{@api_v4}/esg-sector-benchmark?year=#{year}")
+
+  @doc """
   Fetches the symbols of all companies from the FMP API.
 
   ## Examples
