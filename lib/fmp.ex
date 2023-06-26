@@ -71,6 +71,22 @@ defmodule FMP do
     do: get("#{@api_v3}/income-statement/#{cik_or_symbol}", params)
 
   @doc """
+  Fetches a company's income statement growth from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, income_statement_growth} = FMP.get_income_statement_growth("AAPL")
+    iex> Enum.count(income_statement_growth) > 0
+    true
+
+    iex> {:ok, income_statement_growth} = FMP.get_income_statement_growth("AAPL", %{period: "quarter", limit: 1})
+    iex> Enum.count(income_statement_growth) == 1
+    true
+  """
+  def get_income_statement_growth(symbol, params \\ %{}),
+    do: get("#{@api_v3}/income-statement-growth/#{symbol}", params)
+
+  @doc """
   Fetches a company's balance sheets from the FMP API.
 
   ## Examples
@@ -87,6 +103,22 @@ defmodule FMP do
     do: get("#{@api_v3}/balance-sheet-statement/#{cik_or_symbol}", params)
 
   @doc """
+  Fetches a company's balance sheet growth from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, balance_sheet_growth} = FMP.get_balance_sheet_growth("AAPL")
+    iex> Enum.count(balance_sheet_growth) > 0
+    true
+
+    iex> {:ok, balance_sheet_growth} = FMP.get_balance_sheet_growth("AAPL", %{period: "quarter", limit: 1})
+    iex> Enum.count(balance_sheet_growth) == 1
+    true
+  """
+  def get_balance_sheet_growth(symbol, params \\ %{}),
+    do: get("#{@api_v3}/balance-sheet-statement-growth/#{symbol}", params)
+
+  @doc """
   Fetches a company's cash flow statements from the FMP API.
 
   ## Examples
@@ -101,6 +133,38 @@ defmodule FMP do
   """
   def get_cash_flow_statements(cik_or_symbol, params \\ %{}),
     do: get("#{@api_v3}/cash-flow-statement/#{cik_or_symbol}", params)
+
+  @doc """
+  Fetches a company's cash flow statement growth from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, cash_flow_statement_growth} = FMP.get_cash_flow_statement_growth("AAPL")
+    iex> Enum.count(cash_flow_statement_growth) > 0
+    true
+
+    iex> {:ok, cash_flow_statement_growth} = FMP.get_cash_flow_statement_growth("AAPL", %{period: "quarter", limit: 1})
+    iex> Enum.count(cash_flow_statement_growth) == 1
+    true
+  """
+  def get_cash_flow_statement_growth(symbol, params \\ %{}),
+    do: get("#{@api_v3}/cash-flow-statement-growth/#{symbol}", params)
+
+  @doc """
+  Fetches a company's financial growth from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, financial_growth} = FMP.get_financial_growth("AAPL")
+    iex> Enum.count(financial_growth) > 0
+    true
+
+    iex> {:ok, financial_growth} = FMP.get_financial_growth("AAPL", %{period: "quarter", limit: 1})
+    iex> Enum.count(financial_growth) == 1
+    true
+  """
+  def get_financial_growth(symbol, params \\ %{}),
+    do: get("#{@api_v3}/financial-growth/#{symbol}", params)
 
   @doc """
   Fetches a company's revenue product segmentation from the FMP API.
@@ -185,6 +249,37 @@ defmodule FMP do
   end
 
   @doc """
+  Fetches a company's key metrics from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, key_metrics} = FMP.get_key_metrics("AAPL")
+    iex> Enum.count(key_metrics) > 0
+    true
+
+    iex> {:ok, key_metrics} = FMP.get_key_metrics("AAPL", %{period: "quarter", limit: 1})
+    iex> Enum.count(key_metrics) == 1
+    true
+  """
+  def get_key_metrics(symbol, params \\ %{}), do: get("#{@api_v3}/key-metrics/#{symbol}", params)
+
+  @doc """
+  Fetches a company's key metrics TTM from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, key_metrics_ttm} = FMP.get_key_metrics_ttm("AAPL")
+    iex> Enum.count(key_metrics_ttm) > 0
+    true
+
+    iex> {:ok, key_metrics_ttm} = FMP.get_key_metrics_ttm("AAPL", %{limit: 1})
+    iex> Enum.count(key_metrics_ttm) == 1
+    true
+  """
+  def get_key_metrics_ttm(symbol, params \\ %{}),
+    do: get("#{@api_v3}/key-metrics-ttm/#{symbol}", params)
+
+  @doc """
   Fetches a company's financial ratios from the FMP API.
 
   ## Examples
@@ -226,6 +321,70 @@ defmodule FMP do
   """
   def get_enterprise_value(symbol, params \\ %{}),
     do: get("#{@api_v3}/enterprise-values/#{symbol}", params)
+
+  @doc """
+  Fetches a company's discounted cash flow from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, discounted_cash_flow} = FMP.get_discounted_cash_flow("AAPL")
+    iex> discounted_cash_flow.symbol
+    "AAPL"
+  """
+  def get_discounted_cash_flow(symbol) do
+    case get("#{@api_v3}/discounted-cash-flow/#{symbol}") do
+      {:ok, resp} -> {:ok, hd(resp)}
+      {:error, _} = error -> error
+    end
+  end
+
+  @doc """
+  Fetches a company's historical discounted cash flow from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, historical_discounted_cash_flow} = FMP.get_historical_discounted_cash_flow("AAPL")
+    iex> Enum.count(historical_discounted_cash_flow) > 0
+    true
+  """
+  def get_historical_discounted_cash_flow(symbol, params \\ %{}),
+    do: get("#{@api_v3}/historical-discounted-cash-flow-statement/#{symbol}", params)
+
+  @doc """
+  Fetches a company's historical daily discounted cash flow from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, historical_daily_discounted_cash_flow} = FMP.get_historical_daily_discounted_cash_flow("AAPL")
+    iex> Enum.count(historical_daily_discounted_cash_flow) > 0
+    true
+  """
+  def get_historical_daily_discounted_cash_flow(symbol, params \\ %{}),
+    do: get("#{@api_v3}/historical-daily-discounted-cash-flow/#{symbol}", params)
+
+  @doc """
+  Fetches a company's advanced discounted cash flow TTM from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, advanced_discounted_cash_flow} = FMP.get_advanced_discounted_cash_flow("AAPL")
+    iex> Enum.count(advanced_discounted_cash_flow) > 0
+    true
+  """
+  def get_advanced_discounted_cash_flow(symbol),
+    do: get("#{@api_v4}/advanced_discounted_cash_flow?symbol=#{symbol}")
+
+  @doc """
+  Fetches a company's advanced levered discounted cash flow from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, advanced_levered_discounted_cash_flow} = FMP.get_advanced_levered_discounted_cash_flow("AAPL")
+    iex> Enum.count(advanced_levered_discounted_cash_flow) > 0
+    true
+  """
+  def get_advanced_levered_discounted_cash_flow(symbol),
+    do: get("#{@api_v4}/advanced_levered_discounted_cash_flow?symbol=#{symbol}")
 
   @doc """
   Fetches a company's key executives from the FMP API.
@@ -319,6 +478,49 @@ defmodule FMP do
   end
 
   @doc """
+  Fetches a company's rating from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, rating} = FMP.get_rating("AAPL")
+    iex> rating.symbol
+    "AAPL"
+  """
+  def get_rating(symbol) do
+    case get("#{@api_v3}/rating/#{symbol}") do
+      {:ok, resp} -> {:ok, hd(resp)}
+      {:error, _} = error -> error
+    end
+  end
+
+  @doc """
+  Fetches a company's historical rating from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, rating} = FMP.get_historical_rating("AAPL")
+    iex> Enum.count(rating) > 0
+    true
+
+    iex> {:ok, rating} = FMP.get_historical_rating("AAPL", %{limit: 1})
+    iex> Enum.count(rating) == 1
+    true
+  """
+  def get_historical_rating(symbol, params \\ %{}),
+    do: get("#{@api_v3}/historical-rating/#{symbol}", params)
+
+  @doc """
+  Fetches a list of company's notes from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, notes} = FMP.get_company_notes("AAPL")
+    iex> Enum.count(notes) > 0
+    true
+  """
+  def get_company_notes(symbol), do: get("#{@api_v4}/company-notes?symbol=#{symbol}")
+
+  @doc """
   Fetches the symbols of all companies from the FMP API.
 
   ## Examples
@@ -410,6 +612,17 @@ defmodule FMP do
     true
   """
   def get_etf_sector_weightings(symbol), do: get("#{@api_v3}/etf-sector-weightings/#{symbol}")
+
+  @doc """
+  Fetches the list of sec filings of a company from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, sec_filings} = FMP.get_sec_filings("AAPL")
+    iex> Enum.count(sec_filings) > 0
+    true
+  """
+  def get_sec_filings(symbol, params \\ %{}), do: get("#{@api_v3}/sec_filings/#{symbol}", params)
 
   @doc """
   Fetches the SEC rss feed from the FMP API.
