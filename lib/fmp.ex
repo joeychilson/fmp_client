@@ -520,6 +520,22 @@ defmodule FMP do
   def company_outlook(symbol), do: get("#{@api_v4}/company-outlook", %{symbol: symbol})
 
   @doc """
+  Fetches a company's core information from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, core_information} = FMP.company_core_information("AAPL")
+    iex> core_information.symbol
+    "AAPL"
+  """
+  def company_core_information(symbol) do
+    case get("#{@api_v4}/company-core-information", %{symbol: symbol}) do
+      {:ok, resp} -> {:ok, hd(resp)}
+      {:error, _} = error -> error
+    end
+  end
+
+  @doc """
   Fetches a company's historical employee count from the FMP API.
 
   ## Examples
@@ -866,6 +882,72 @@ defmodule FMP do
   def etf_sector_weightings(symbol), do: get("#{@api_v3}/etf-sector-weightings/#{symbol}")
 
   @doc """
+  Fetches the list of FMP articles from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, fmp_articles} = FMP.fmp_articles()
+    iex> Enum.count(fmp_articles) > 0
+    true
+  """
+  def fmp_articles(params \\ %{}), do: get("#{@api_v3}/fmp/articles", params)
+
+  @doc """
+  Fetches the list of stock news from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, stock_news} = FMP.stock_news()
+    iex> Enum.count(stock_news) > 0
+    true
+  """
+  def stock_news(params \\ %{}), do: get("#{@api_v3}/stock_news", params)
+
+  @doc """
+  Fetches the list of crypto news from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, crypto_news} = FMP.crypto_news()
+    iex> Enum.count(crypto_news) > 0
+    true
+  """
+  def crypto_news(params \\ %{}), do: get("#{@api_v4}/crypto_news", params)
+
+  @doc """
+  Fetches the list of forex news from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, forex_news} = FMP.forex_news()
+    iex> Enum.count(forex_news) > 0
+    true
+  """
+  def forex_news(params \\ %{}), do: get("#{@api_v4}/forex_news", params)
+
+  @doc """
+  Fetches the list of general news from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, general_news} = FMP.general_news()
+    iex> Enum.count(general_news) > 0
+    true
+  """
+  def general_news(params \\ %{}), do: get("#{@api_v4}/general_news", params)
+
+  @doc """
+  Fetches the list of press releases from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, press_releases} = FMP.press_releases("AAPL")
+    iex> Enum.count(press_releases) > 0
+    true
+  """
+  def press_releases(symbol, params \\ %{}), do: get("#{@api_v3}/press-releases/#{symbol}", params)
+
+  @doc """
   Fetches the list of sec filings of a company from the FMP API.
 
   ## Examples
@@ -885,7 +967,7 @@ defmodule FMP do
     iex> Enum.count(rss_feed) > 0
     true
   """
-  def rss_feed(params \\ %{}), do: get("#{@api_v3}/rss_feed", params)
+  def rss_feed(page \\ 0), do: get("#{@api_v3}/rss_feed", %{page: page})
 
   @doc """
   Fetches the price targets rss feed from the FMP API.
@@ -896,8 +978,8 @@ defmodule FMP do
     iex> Enum.count(price_targets_rss_feed) > 0
     true
   """
-  def price_targets_rss_feed(params \\ %{}),
-    do: get("#{@api_v4}/price-target-rss-feed", params)
+  def price_targets_rss_feed(page \\ 0),
+    do: get("#{@api_v4}/price-target-rss-feed", %{page: page})
 
   @doc """
   Fetches the upgrades and downgrades rss feed from the FMP API.
@@ -908,8 +990,20 @@ defmodule FMP do
     iex> Enum.count(upgrades_and_downgrades_rss_feed) > 0
     true
   """
-  def upgrades_and_downgrades_rss_feed(params \\ %{}),
-    do: get("#{@api_v4}/upgrades-downgrades-rss-feed", params)
+  def upgrades_and_downgrades_rss_feed(page \\ 0),
+    do: get("#{@api_v4}/upgrades-downgrades-rss-feed", %{page: page})
+
+  @doc """
+  Fetches the stock news sentiment rss feed from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, stock_news_sentiment_rss_feed} = FMP.stock_news_sentiment_rss_feed()
+    iex> Enum.count(stock_news_sentiment_rss_feed) > 0
+    true
+  """
+  def stock_news_sentiment_rss_feed(page \\ 0),
+    do: get("#{@api_v4}/stock-news-sentiments-rss-feed", %{page: page})
 
   @doc """
   Search via ticker and company name from the FMP API.
