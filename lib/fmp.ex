@@ -12,7 +12,7 @@ defmodule FMP do
     true
   """
   def get_financial_reports_dates(symbol),
-    do: get("#{@api_v4}/financial-reports-dates?symbol=#{symbol}")
+    do: get("#{@api_v4}/financial-reports-dates", %{symbol: symbol})
 
   @doc """
   Fetches a list of a company's earnings call transcripts from the FMP API.
@@ -24,7 +24,7 @@ defmodule FMP do
     true
   """
   def get_earnings_call_transcript(symbol),
-    do: get("#{@api_v4}/earning_call_transcript?symbol=#{symbol}")
+    do: get("#{@api_v4}/earning_call_transcript", %{symbol: symbol})
 
   @doc """
   Fetches the earnings call transcripts for a company for a given year.
@@ -36,7 +36,7 @@ defmodule FMP do
     true
   """
   def get_earnings_call_transcript(symbol, year),
-    do: get("#{@api_v4}/batch_earning_call_transcript/#{symbol}?year=#{year}")
+    do: get("#{@api_v4}/batch_earning_call_transcript/#{symbol}", %{year: year})
 
   @doc """
   Fetches the earnings call transcripts for a company for a given year and quarter.
@@ -48,7 +48,7 @@ defmodule FMP do
     true
   """
   def get_earnings_call_transcript(symbol, year, quarter) do
-    case get("#{@api_v3}/earning_call_transcript/#{symbol}?year=#{year}&quarter=#{quarter}") do
+    case get("#{@api_v3}/earning_call_transcript/#{symbol}", %{year: year, quarter: quarter}) do
       {:ok, resp} -> {:ok, hd(resp)}
       {:error, _} = error -> error
     end
@@ -178,7 +178,7 @@ defmodule FMP do
     true
   """
   def get_product_segmentation(symbol) do
-    resp = get("#{@api_v4}/revenue-product-segmentation?symbol=#{symbol}&structure=flat")
+    resp = get("#{@api_v4}/revenue-product-segmentation", %{symbol: symbol, structure: "flat"})
 
     case resp do
       {:ok, data} ->
@@ -219,7 +219,7 @@ defmodule FMP do
     true
   """
   def get_geographic_segmentation(symbol) do
-    resp = get("#{@api_v4}/revenue-geographic-segmentation?symbol=#{symbol}&structure=flat")
+    resp = get("#{@api_v4}/revenue-geographic-segmentation", %{symbol: symbol, structure: "flat"})
 
     case resp do
       {:ok, data} ->
@@ -304,7 +304,7 @@ defmodule FMP do
     "AAPL"
   """
   def get_financial_scores(symbol) do
-    case get("#{@api_v4}/score?symbol=#{symbol}") do
+    case get("#{@api_v4}/score", %{symbol: symbol}) do
       {:ok, resp} -> {:ok, hd(resp)}
       {:error, _} = error -> error
     end
@@ -372,7 +372,7 @@ defmodule FMP do
     true
   """
   def get_advanced_discounted_cash_flow(symbol),
-    do: get("#{@api_v4}/advanced_discounted_cash_flow?symbol=#{symbol}")
+    do: get("#{@api_v4}/advanced_discounted_cash_flow", %{symbol: symbol})
 
   @doc """
   Fetches a company's advanced levered discounted cash flow from the FMP API.
@@ -384,7 +384,7 @@ defmodule FMP do
     true
   """
   def get_advanced_levered_discounted_cash_flow(symbol),
-    do: get("#{@api_v4}/advanced_levered_discounted_cash_flow?symbol=#{symbol}")
+    do: get("#{@api_v4}/advanced_levered_discounted_cash_flow", %{symbol: symbol})
 
   @doc """
   Fetches a company's key executives from the FMP API.
@@ -439,7 +439,7 @@ defmodule FMP do
     "AAPL"
   """
   def get_peers(symbol) do
-    case get("#{@api_v4}/stock_peers?symbol=#{symbol}") do
+    case get("#{@api_v4}/stock_peers", %{symbol: symbol}) do
       {:ok, resp} -> {:ok, hd(resp)}
       {:error, _} = error -> error
     end
@@ -462,6 +462,73 @@ defmodule FMP do
   end
 
   @doc """
+  Fetches a company's price targets from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, price_targets} = FMP.get_price_targets("AAPL")
+    iex> Enum.count(price_targets) > 0
+    true
+  """
+  def get_price_targets(symbol), do: get("#{@api_v4}/price-target", %{symbol: symbol})
+
+  @doc """
+  Fetches a company's price targets consensus from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, price_targets_consenus} = FMP.get_price_targets_consenus("AAPL")
+    iex> price_targets_consenus.symbol
+    "AAPL"
+  """
+  def get_price_targets_consenus(symbol) do
+    case get("#{@api_v4}/price-target-consensus", %{symbol: symbol}) do
+      {:ok, resp} -> {:ok, hd(resp)}
+      {:error, _} = error -> error
+    end
+  end
+
+  @doc """
+  Fetches a company's price target summary from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, price_target_summary} = FMP.get_price_target_summary("AAPL")
+    iex> price_target_summary.symbol
+    "AAPL"
+  """
+  def get_price_target_summary(symbol) do
+    case get("#{@api_v4}/price-target-summary", %{symbol: symbol}) do
+      {:ok, resp} -> {:ok, hd(resp)}
+      {:error, _} = error -> error
+    end
+  end
+
+  @doc """
+  Fetches a list of price targets by an analyst from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, price_targets} = FMP.get_price_targets_by_analyst("AAPL")
+    iex> Enum.count(price_targets) > 0
+    true
+  """
+  def get_price_targets_by_analyst(analyst_name),
+    do: get("#{@api_v4}/price-target-analyst-name", %{name: analyst_name})
+
+  @doc """
+  Fetches a list of price targets by an analyst company from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, price_targets} = FMP.get_price_targets_by_analyst_company("AAPL")
+    iex> Enum.count(price_targets) > 0
+    true
+  """
+  def get_price_targets_by_analyst_company(company),
+    do: get("#{@api_v4}/price-target-analyst-company", %{company: company})
+
+  @doc """
   Fetches a company's shares float from the FMP API.
 
   ## Examples
@@ -471,7 +538,7 @@ defmodule FMP do
     "AAPL"
   """
   def get_shares_float(symbol) do
-    case get("#{@api_v4}/shares_float?symbol=#{symbol}") do
+    case get("#{@api_v4}/shares_float", %{symbol: symbol}) do
       {:ok, resp} -> {:ok, hd(resp)}
       {:error, _} = error -> error
     end
@@ -518,7 +585,7 @@ defmodule FMP do
     iex> Enum.count(notes) > 0
     true
   """
-  def get_company_notes(symbol), do: get("#{@api_v4}/company-notes?symbol=#{symbol}")
+  def get_company_notes(symbol), do: get("#{@api_v4}/company-notes", %{symbol: symbol})
 
   @doc """
   Fetches a company's ESG score from the FMP API.
@@ -530,7 +597,7 @@ defmodule FMP do
     true
   """
   def get_esg_scores(symbol),
-    do: get("#{@api_v4}/esg-environmental-social-governance-data?symbol=#{symbol}")
+    do: get("#{@api_v4}/esg-environmental-social-governance-data", %{symbol: symbol})
 
   @doc """
   Fetches a company's ESG risk rating from the FMP API.
@@ -542,7 +609,7 @@ defmodule FMP do
     true
   """
   def get_esg_risk_ratings(symbol),
-    do: get("#{@api_v4}/esg-environmental-social-governance-data-ratings?symbol=#{symbol}")
+    do: get("#{@api_v4}/esg-environmental-social-governance-data-ratings", %{symbol: symbol})
 
   @doc """
   Fetches a sector ESG score benchmarks from the FMP API.
@@ -554,7 +621,7 @@ defmodule FMP do
     true
   """
   def get_esg_sector_benchmarks(year),
-    do: get("#{@api_v4}/esg-sector-benchmark?year=#{year}")
+    do: get("#{@api_v4}/esg-sector-benchmark", %{year: year})
 
   @doc """
   Fetches the symbols of all companies from the FMP API.
@@ -599,7 +666,7 @@ defmodule FMP do
     "SPY"
   """
   def get_etf(symbol) do
-    case get("#{@api_v4}/etf-info?symbol=#{symbol}") do
+    case get("#{@api_v4}/etf-info", %{symbol: symbol}) do
       {:ok, resp} -> {:ok, hd(resp)}
       {:error, _} = error -> error
     end
@@ -670,6 +737,18 @@ defmodule FMP do
     true
   """
   def get_rss_feed(params \\ %{}), do: get("#{@api_v3}/rss_feed", params)
+
+  @doc """
+  Fetches the price targets rss feed from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, price_targets_rss_feed} = FMP.get_price_targets_rss_feed()
+    iex> Enum.count(price_targets_rss_feed) > 0
+    true
+  """
+  def get_price_targets_rss_feed(params \\ %{}),
+    do: get("#{@api_v4}/price-target-rss-feed", params)
 
   @doc false
   defp get(url, params \\ %{}) do
