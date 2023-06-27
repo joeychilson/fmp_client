@@ -960,7 +960,7 @@ defmodule FMP do
 
   @doc false
   defp get(url, params \\ %{}) do
-    api_key = Application.env(:fmp_client, :api_key)
+    api_key = Application.get_env(:fmp_client, :api_key)
     if api_key == nil, do: {:error, :api_key_not_set}
 
     url = if params == %{}, do: url, else: "#{url}?#{URI.encode_query(params)}"
