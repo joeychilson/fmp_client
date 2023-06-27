@@ -462,6 +462,22 @@ defmodule FMP do
   end
 
   @doc """
+  Fetches a company's shares float from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, shares_float} = FMP.get_shares_float("AAPL")
+    iex> shares_float.symbol
+    "AAPL"
+  """
+  def get_shares_float(symbol) do
+    case get("#{@api_v4}/shares_float", %{symbol: symbol}) do
+      {:ok, resp} -> {:ok, hd(resp)}
+      {:error, _} = error -> error
+    end
+  end
+
+  @doc """
   Fetches a company's price targets from the FMP API.
 
   ## Examples
@@ -521,7 +537,7 @@ defmodule FMP do
 
   ## Examples
 
-    iex> {:ok, price_targets} = FMP.get_price_targets_by_analyst_company("AAPL")
+    iex> {:ok, price_targets} = FMP.get_price_targets_by_analyst_company("Barclays")
     iex> Enum.count(price_targets) > 0
     true
   """
@@ -529,20 +545,44 @@ defmodule FMP do
     do: get("#{@api_v4}/price-target-analyst-company", %{company: company})
 
   @doc """
-  Fetches a company's shares float from the FMP API.
+  Fetches a company's upgrades and downgrades from the FMP API.
 
   ## Examples
 
-    iex> {:ok, shares_float} = FMP.get_shares_float("AAPL")
-    iex> shares_float.symbol
+    iex> {:ok, upgrades_and_downgrades} = FMP.get_upgrades_and_downgrades("AAPL")
+    iex> Enum.count(upgrades_and_downgrades) > 0
+    true
+  """
+  def get_upgrades_and_downgrades(symbol),
+    do: get("#{@api_v4}/upgrade-downgrade", %{symbol: symbol})
+
+  @doc """
+  Fetches a company's upgrades and downgrades consensus from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, upgrades_and_downgrades_consenus} = FMP.get_upgrades_and_downgrades_consenus("AAPL")
+    iex> upgrades_and_downgrades_consenus.symbol
     "AAPL"
   """
-  def get_shares_float(symbol) do
-    case get("#{@api_v4}/shares_float", %{symbol: symbol}) do
+  def get_upgrades_and_downgrades_consenus(symbol) do
+    case get("#{@api_v4}/upgrade-downgrade-consensus", %{symbol: symbol}) do
       {:ok, resp} -> {:ok, hd(resp)}
       {:error, _} = error -> error
     end
   end
+
+  @doc """
+  Fetches a list of upgrades and downgrades by an analyst company from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, upgrades_and_downgrades} = FMP.get_upgrades_and_downgrades_by_company("Barclays")
+    iex> Enum.count(upgrades_and_downgrades) > 0
+    true
+  """
+  def get_upgrades_and_downgrades_by_company(company),
+    do: get("#{@api_v4}/upgrade-downgrade-analyst-company", %{company: company})
 
   @doc """
   Fetches a company's rating from the FMP API.
@@ -749,6 +789,18 @@ defmodule FMP do
   """
   def get_price_targets_rss_feed(params \\ %{}),
     do: get("#{@api_v4}/price-target-rss-feed", params)
+
+  @doc """
+  Fetches the upgrades and downgrades rss feed from the FMP API.
+
+  ## Examples
+
+    iex> {:ok, upgrades_and_downgrades_rss_feed} = FMP.get_upgrades_and_downgrades_rss_feed()
+    iex> Enum.count(upgrades_and_downgrades_rss_feed) > 0
+    true
+  """
+  def get_upgrades_and_downgrades_rss_feed(params \\ %{}),
+    do: get("#{@api_v4}/upgrades-downgrades-rss-feed", params)
 
   @doc false
   defp get(url, params \\ %{}) do
