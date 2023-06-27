@@ -5,7 +5,7 @@ defmodule FMP do
   @doc """
   Fetches the trading hours for the current year from the FMP API.
   """
-  def trading_hours(), do: get("#{@api_v3}/is-the-market-open")
+  def trading_hours, do: get("#{@api_v3}/is-the-market-open")
 
   @doc """
   Fetches a list of all delisted companies from the FMP API.
@@ -342,6 +342,43 @@ defmodule FMP do
   end
 
   @doc """
+  Fetches a company's SIC information using CIK from the FMP API.
+  """
+  def sic_by_cik(cik) do
+    case get("#{@api_v4}/standard_industrial_classification", %{cik: cik}) do
+      {:ok, resp} -> {:ok, hd(resp)}
+      {:error, _} = error -> error
+    end
+  end
+
+  @doc """
+  Fetches a company's SIC information using symbol from the FMP API.
+  """
+  def sic_by_symbol(symbol) do
+    case get("#{@api_v4}/standard_industrial_classification", %{symbol: symbol}) do
+      {:ok, resp} -> {:ok, hd(resp)}
+      {:error, _} = error -> error
+    end
+  end
+
+  @doc """
+  Fetches SIC information for SIC code from the FMP API.
+  """
+  def sic_by_code(sic_code),
+    do: get("#{@api_v4}/standard_industrial_classification", %{sicCode: sic_code})
+
+  @doc """
+  Fetches all SIC information from the FMP API.
+  """
+  def all_sics, do: get("#{@api_v4}/standard_industrial_classification/all")
+
+  @doc """
+  Fetches a list of SIC codes from the FMP API.
+  """
+  def sic_list(params \\ %{}),
+    do: get("#{@api_v4}/standard_industrial_classification_list", params)
+
+  @doc """
   Fetches a company's historical employee count from the FMP API.
   """
   def historical_employee_count(symbol),
@@ -356,6 +393,54 @@ defmodule FMP do
       {:error, _} = error -> error
     end
   end
+
+  @doc """
+  Fetches a company's historical chart from the FMP API.
+  """
+  def historical_chart(interval, symbol),
+    do: get("#{@api_v3}/historical-chart/#{interval}/#{symbol}")
+
+  @doc """
+  Fetches historical chart with full data for the symbols from the FMP API.
+  """
+  def historical_chart_full(symbols, params \\ %{}),
+    do: get("#{@api_v3}/historical-price-full/#{symbols}", params)
+
+  @doc """
+  Fetches quotes for an exchange from the FMP API.
+  """
+  def quotes(exchange), do: get("#{@api_v3}/quotes/#{exchange}")
+
+  @doc """
+  Fetches quotes from the FMP API.
+  """
+  def quote(symbols), do: get("#{@api_v3}/quote/#{symbols}")
+
+  @doc """
+  Fetches short quotes from the FMP API.
+  """
+  def quote_short(symbols), do: get("#{@api_v3}/quote-short/#{symbols}")
+
+  @doc """
+  Fetches price changes from the FMP API.
+  """
+  def price_change(symbols), do: get("#{@api_v3}/stock-price-change/#{symbols}")
+
+  @doc """
+  Fetches a OTC prices from the FMP API.
+  """
+  def otc_prices(symbols), do: get("#{@api_v3}/otc/real-time-price/#{symbols}")
+
+  @doc """
+  Fetches a company's technical indicator from the FMP API.
+  """
+  def technical_indicator(symbol, interval, params \\ %{}),
+    do: get("#{@api_v3}/technical_indicator/#{interval}/#{symbol}", params)
+
+  @doc """
+  Fetches a company's historical stock splits from the FMP API.
+  """
+  def stock_splits(symbol), do: get("#{@api_v3}/historical-price-full/stock_split/#{symbol}")
 
   @doc """
   Fetches a company's price targets from the FMP API.
@@ -375,7 +460,7 @@ defmodule FMP do
   @doc """
   Fetches a company's price target summary from the FMP API.
   """
-  def price_tarsummary(symbol) do
+  def price_target_summary(symbol) do
     case get("#{@api_v4}/price-target-summary", %{symbol: symbol}) do
       {:ok, resp} -> {:ok, hd(resp)}
       {:error, _} = error -> error
@@ -456,10 +541,16 @@ defmodule FMP do
     do: get("#{@api_v4}/esg-sector-benchmark", %{year: year})
 
   @doc """
+  Fetches acquistion of beneficial ownership from the FMP API.
+  """
+  def acquisition_of_beneficial_ownership(symbol),
+    do: get("#{@api_v4}/insider-trading/acquisition-of-beneficial-ownership/#{symbol}")
+
+  @doc """
   Fetches a company's institutional ownership from the FMP API.
   """
   def institutional_stock_ownership(symbol),
-    do: get("#{@api_v4}/institutional-ownership/symbol-ownership", %{symbol: symbol})
+    do: get("#{@api_v4}/insider/ownership/acquisition_of_beneficial_ownership", %{symbol: symbol})
 
   @doc """
   Fetches a company's institutional ownership by holders from the FMP API.
@@ -472,24 +563,53 @@ defmodule FMP do
       )
 
   @doc """
+  Fetches a list of commitment of traders report from the FMP API.
+  """
+  def commitment_of_traders_report_list, do: get("#{@api_v4}/commitment_of_traders_report/list")
+
+  @doc """
+  Fetches a commitment of traders report from and to a date from the FMP API.
+  """
+  def commitment_of_traders_report(from, to),
+    do: get("#{@api_v4}/commitment_of_traders_report", %{from: from, to: to})
+
+  @doc """
+  Fetches a commitment of traders report from a symbol from the FMP API.
+  """
+  def commitment_of_traders_report(symbol),
+    do: get("#{@api_v4}/commitment_of_traders_report/#{symbol}")
+
+  @doc """
+  Fetches a commitment of traders report analysis from and to a date from the FMP API.
+  """
+  def commitment_of_traders_report_analysis(from, to),
+    do: get("#{@api_v4}/commitment_of_traders_report_analysis", %{from: from, to: to})
+
+  @doc """
+  Fetches a commitment of traders report analysis from a symbol from the FMP API.
+  """
+  def commitment_of_traders_report_analysis(symbol),
+    do: get("#{@api_v4}/commitment_of_traders_report_analysis/#{symbol}")
+
+  @doc """
   Fetches the symbols of all companies from the FMP API.
   """
-  def symbols(), do: get("#{@api_v3}/stock/list")
+  def symbols, do: get("#{@api_v3}/stock/list")
 
   @doc """
   Fetches the symbols of all tradable companies from the FMP API.
   """
-  def tradable_symbols(), do: get("#{@api_v3}/available-traded/list")
+  def tradable_symbols, do: get("#{@api_v3}/available-traded/list")
 
   @doc """
   Fetches the symbol changes from the FMP API.
   """
-  def symbol_changes(), do: get("#{@api_v4}/symbol_change")
+  def symbol_changes, do: get("#{@api_v4}/symbol_change")
 
   @doc """
   Fetches the symbols of all ETFs from the FMP API.
   """
-  def etfs(), do: get("#{@api_v3}/etf/list")
+  def etfs, do: get("#{@api_v3}/etf/list")
 
   @doc """
   Fetches information about an ETF from the FMP API.
@@ -535,22 +655,22 @@ defmodule FMP do
   @doc """
   Fetches sectors performance from the FMP API.
   """
-  def sectors_performance(), do: get("#{@api_v3}/sector_performance")
+  def sectors_performance, do: get("#{@api_v3}/sector_performance")
 
   @doc """
   Fetches top gainers from the FMP API.
   """
-  def top_gainers(), do: get("#{@api_v3}/stock_market/gainers")
+  def top_gainers, do: get("#{@api_v3}/stock_market/gainers")
 
   @doc """
   Fetches top losers from the FMP API.
   """
-  def top_losers(), do: get("#{@api_v3}/stock_market/losers")
+  def top_losers, do: get("#{@api_v3}/stock_market/losers")
 
   @doc """
   Fetches most active stocks from the FMP API.
   """
-  def most_active(), do: get("#{@api_v3}/stock_market/most-active")
+  def most_active, do: get("#{@api_v3}/stock_market/most-active")
 
   @doc """
   Fetches historical sectors performance from the FMP API.
