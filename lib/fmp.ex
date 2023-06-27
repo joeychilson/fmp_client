@@ -14,6 +14,64 @@ defmodule FMP do
     do: get("#{@api_v3}/delisted-companies", params)
 
   @doc """
+  Fetches the earnings calendar from the FMP API.
+  """
+  def earnings_calendar(params \\ %{}), do: get("#{@api_v3}/earning_calendar", params)
+
+  @doc """
+  Fetches the confirmed earnings calendar from the FMP API.
+  """
+  def earnings_calendar_confirmed(params \\ %{}),
+    do: get("#{@api_v4}/earning-calendar-confirmed", params)
+
+  @doc """
+  Fetches the historical earnings calendar for a given symbol from the FMP API.
+  """
+  def historical_earnings_calendar(symbol, params \\ %{}),
+    do: get("#{@api_v3}/historical/earning_calendar/#{symbol}", params)
+
+  @doc """
+  Fetches the IPO calendar from the FMP API.
+  """
+  def ipo_calendar(params \\ %{}), do: get("#{@api_v3}/ipo_calendar", params)
+
+  @doc """
+  Fetches the IPO calendar prospectus from the FMP API.
+  """
+  def ipo_calendar_prospectus(params \\ %{}),
+    do: get("#{@api_v4}/ipo-calendar-prospectus", params)
+
+  @doc """
+  Fetches the confirmed IPO calendar from the FMP API.
+  """
+  def ipo_calendar_confirmed(params \\ %{}),
+    do: get("#{@api_v4}/ipo-calendar-confirmed", params)
+
+  @doc """
+  Fetches the stock split calendar from the FMP API.
+  """
+  def stock_split_calendar(params \\ %{}),
+    do: get("#{@api_v3}/stock_split_calendar", params)
+
+  @doc """
+  Fetches the dividend calendar from the FMP API.
+  """
+  def dividend_calendar(params \\ %{}),
+    do: get("#{@api_v3}/stock_dividend_calendar", params)
+
+  @doc """
+  Fetches the historical dividend calendar for a given symbol from the FMP API.
+  """
+  def historical_dividends(symbol),
+    do: get("#{@api_v3}/historical-price-full/stock_dividend/#{symbol}")
+
+  @doc """
+  Fetches the economoic calendar from the FMP API.
+  """
+  def economic_calendar(params \\ %{}),
+    do: get("#{@api_v3}/economic-calendar", params)
+
+  @doc """
   Fetches a company's financial reports dates from the FMP API.
   """
   def financial_reports_dates(symbol),
@@ -464,6 +522,43 @@ defmodule FMP do
   def etf_sector_weightings(symbol), do: get("#{@api_v3}/etf-sector-weightings/#{symbol}")
 
   @doc """
+  Fetches sectors PE ratios for a given date from the FMP API.
+  """
+  def sectors_pe_ratios(date), do: get("#{@api_v4}/sector_price_earning_ratio", %{date: date})
+
+  @doc """
+  Fetches industries PE ratios for a given date from the FMP API.
+  """
+  def industries_pe_ratios(date),
+    do: get("#{@api_v4}/industry_price_earning_ratio", %{date: date})
+
+  @doc """
+  Fetches sectors performance from the FMP API.
+  """
+  def sectors_performance(), do: get("#{@api_v3}/sector_performance")
+
+  @doc """
+  Fetches top gainers from the FMP API.
+  """
+  def top_gainers(), do: get("#{@api_v3}/stock_market/gainers")
+
+  @doc """
+  Fetches top losers from the FMP API.
+  """
+  def top_losers(), do: get("#{@api_v3}/stock_market/losers")
+
+  @doc """
+  Fetches most active stocks from the FMP API.
+  """
+  def most_active(), do: get("#{@api_v3}/stock_market/most-active")
+
+  @doc """
+  Fetches historical sectors performance from the FMP API.
+  """
+  def historical_sectors_performance(params \\ %{}),
+    do: get("#{@api_v3}/historical-sectors-performance", params)
+
+  @doc """
   Fetches the list of FMP articles from the FMP API.
   """
   def fmp_articles(params \\ %{}), do: get("#{@api_v3}/fmp/articles", params)
@@ -491,7 +586,8 @@ defmodule FMP do
   @doc """
   Fetches the list of press releases from the FMP API.
   """
-  def press_releases(symbol, params \\ %{}), do: get("#{@api_v3}/press-releases/#{symbol}", params)
+  def press_releases(symbol, params \\ %{}),
+    do: get("#{@api_v3}/press-releases/#{symbol}", params)
 
   @doc """
   Fetches the list of sec filings of a company from the FMP API.
