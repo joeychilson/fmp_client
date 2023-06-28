@@ -663,19 +663,28 @@ defmodule FMP do
   Fetches a company's institutional ownership percentage from the FMP API.
   """
   def institutional_ownership_percentage(symbol, params \\ %{}),
-    do: get("#{@api_v4}/institutional-ownership/institutional-holders/symbol-ownership-percent", Map.merge(%{symbol: symbol}, params))
+    do:
+      get(
+        "#{@api_v4}/institutional-ownership/institutional-holders/symbol-ownership-percent",
+        Map.merge(%{symbol: symbol}, params)
+      )
 
   @doc """
   Fetches a company's institutional ownership by shares held from the FMP API.
   """
   def institutional_ownership_by_shares_held(symbol, params \\ %{}),
-    do: get("#{@api_v4}/institutional-ownership/institutional-holders/symbol-ownership", Map.merge(%{symbol: symbol}, params))
+    do:
+      get(
+        "#{@api_v4}/institutional-ownership/institutional-holders/symbol-ownership",
+        Map.merge(%{symbol: symbol}, params)
+      )
 
   @doc """
   Fetches a institution's portfolio holdings from the FMP API.
   """
   def institution_portfolio_holdings(cik, params \\ %{}),
-    do: get("#{@api_v4}/institutional-ownership/portfolio-holdings", Map.merge(%{cik: cik}, params))
+    do:
+      get("#{@api_v4}/institutional-ownership/portfolio-holdings", Map.merge(%{cik: cik}, params))
 
   @doc """
   Fetches a institution's portfolio summary from the FMP API.
@@ -693,7 +702,11 @@ defmodule FMP do
   Fetches a institution's portfolio industry summary from the FMP API.
   """
   def institution_industry_summary(cik, params \\ %{}),
-    do: get("#{@api_v4}/institutional-ownership/industry/portfolio-holdings-summary", Map.merge(%{cik: cik}, params))
+    do:
+      get(
+        "#{@api_v4}/institutional-ownership/industry/portfolio-holdings-summary",
+        Map.merge(%{cik: cik}, params)
+      )
 
   @doc """
   Fetches insider trading transactions from the FMP API.
