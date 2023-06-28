@@ -675,7 +675,7 @@ defmodule FMP do
   Fetches a institution's portfolio holdings from the FMP API.
   """
   def institution_portfolio_holdings(cik, params \\ %{}),
-    do: get("#{@api_v4}/institutional-ownership/portfolio-holdings", Map.merge(%{cik: cik}, params)
+    do: get("#{@api_v4}/institutional-ownership/portfolio-holdings", Map.merge(%{cik: cik}, params))
 
   @doc """
   Fetches a institution's portfolio summary from the FMP API.
