@@ -10,18 +10,33 @@ defmodule FMP do
   @doc """
   Fetches a list of all delisted companies from the FMP API.
   """
-  def delisted_companies(params \\ %{}),
+  def companies_delisted(params \\ %{}),
     do: get("#{@api_v3}/delisted-companies", params)
 
   @doc """
   Fetches a list of companies in the S&P 500 from the FMP API.
   """
-  def sp500_companies, do: get("#{@api_v3}/sp500_constituent")
+  def companies_sp500, do: get("#{@api_v3}/sp500_constituent")
 
   @doc """
   Fetches the history of companies in the S&P 500 from the FMP API.
   """
-  def sp500_companies_historical, do: get("#{@api_v3}/historical/sp500_constituent")
+  def companies_sp500_historical, do: get("#{@api_v3}/historical/sp500_constituent")
+
+  @doc """
+  Fetches a list of companies in the NASDAQ from the FMP API.
+  """
+  def companies_nasdaq, do: get("#{@api_v3}/nasdaq_constituent")
+
+  @doc """
+  Fetches a list of companies in the Dow Jones from the FMP API.
+  """
+  def companies_dow_jones, do: get("#{@api_v3}/dowjones_constituent")
+
+  @doc """
+  Fetches the history of companies in the Dow Jones from the FMP API.
+  """
+  def companies_dow_jones_historical, do: get("#{@api_v3}/historical/dowjones_constituent")
 
   @doc """
   Fetches a company by cik from the FMP API.
@@ -333,6 +348,17 @@ defmodule FMP do
     do: get("#{@api_v4}/advanced_levered_discounted_cash_flow", %{symbol: symbol})
 
   @doc """
+  Fetches a company's insider roster from the FMP API.
+  """
+  def insider_roster(symbol), do: get("#{@api_v4}/insider-roaster", %{symbol: symbol})
+
+  @doc """
+  Fetches a company's insider roster statistics from the FMP API.
+  """
+  def insider_roster_statistics(symbol),
+    do: get("#{@api_v4}/insider-roaster-statistic", %{symbol: symbol})
+
+  @doc """
   Fetches a company's key executives from the FMP API.
   """
   def key_executives(symbol), do: get("#{@api_v3}/key-executives/#{symbol}")
@@ -448,6 +474,16 @@ defmodule FMP do
   Fetches a OTC prices from the FMP API.
   """
   def otc_prices(symbols), do: get("#{@api_v3}/otc/real-time-price/#{symbols}")
+
+  @doc """
+  Fetches a FOREX prices from the FMP API.
+  """
+  def forex, do: get("#{@api_v3}/fx")
+
+  @doc """
+  Fetches a FOREX exchange rates for a pair from the FMP API.
+  """
+  def exchange_rates(pair), do: get("#{@api_v3}/fx/#{pair}")
 
   @doc """
   Fetches a company's technical indicator from the FMP API.
@@ -612,26 +648,63 @@ defmodule FMP do
     do: get("#{@api_v4}/form-thirteen-allocation", %{date: date})
 
   @doc """
-  Fetches acquistion of beneficial ownership from the FMP API.
+  Fetches a company's institutional ownership from the FMP API.
   """
-  def acquisition_of_beneficial_ownership(symbol),
-    do: get("#{@api_v4}/insider-trading/acquisition-of-beneficial-ownership/#{symbol}")
+  def insider_ownership_acquisition(symbol),
+    do: get("#{@api_v4}/insider/ownership/acquisition_of_beneficial_ownership", %{symbol: symbol})
 
   @doc """
   Fetches a company's institutional ownership from the FMP API.
   """
-  def institutional_stock_ownership(symbol),
-    do: get("#{@api_v4}/insider/ownership/acquisition_of_beneficial_ownership", %{symbol: symbol})
+  def institutional_ownership(symbol),
+    do: get("#{@api_v4}/institutional-ownership/symbol-ownership", %{symbol: symbol})
 
   @doc """
-  Fetches a company's institutional ownership by holders from the FMP API.
+  Fetches a company's institutional ownership percentage from the FMP API.
   """
-  def stock_ownership_by_holders(symbol, params \\ %{}),
-    do:
-      get(
-        "#{@api_v4}/institutional-ownership/institutional-holders/symbol-ownership-percent",
-        Map.merge(%{symbol: symbol}, params)
-      )
+  def institutional_ownership_percentage(symbol, params \\ %{}),
+    do: get("#{@api_v4}/institutional-ownership/institutional-holders/symbol-ownership-percent", Map.merge(%{symbol: symbol}, params))
+
+  @doc """
+  Fetches a company's institutional ownership by shares held from the FMP API.
+  """
+  def institutional_ownership_by_shares_held(symbol, params \\ %{}),
+    do: get("#{@api_v4}/institutional-ownership/institutional-holders/symbol-ownership", Map.merge(%{symbol: symbol}, params))
+
+  @doc """
+  Fetches a institution's portfolio holdings from the FMP API.
+  """
+  def institution_portfolio_holdings(cik, params \\ %{}),
+    do: get("#{@api_v4}/institutional-ownership/portfolio-holdings", Map.merge(%{cik: cik}, params)
+
+  @doc """
+  Fetches a institution's portfolio summary from the FMP API.
+  """
+  def institution_portfolio_summary(cik),
+    do: get("#{@api_v4}/institutional-ownership/portfolio-holdings-summary", %{cik: cik})
+
+  @doc """
+  Fetches a institution's portfolio dates from the FMP API.
+  """
+  def institution_portfolio_dates(cik),
+    do: get("#{@api_v4}/institutional-ownership/portfolio-date", %{cik: cik})
+
+  @doc """
+  Fetches a institution's portfolio industry summary from the FMP API.
+  """
+  def institution_industry_summary(cik, params \\ %{}),
+    do: get("#{@api_v4}/institutional-ownership/industry/portfolio-holdings-summary", Map.merge(%{cik: cik}, params))
+
+  @doc """
+  Fetches insider trading transactions from the FMP API.
+  """
+  def insider_trading(params \\ %{}),
+    do: get("#{@api_v4}/insider-trading", params)
+
+  @doc """
+  Fetches insider trading transactions types from the FMP API.
+  """
+  def insider_trading_transactions_type, do: get("#{@api_v4}/insider-trading-transaction-type")
 
   @doc """
   Fetches a list of commitment of traders report from the FMP API.
@@ -663,6 +736,27 @@ defmodule FMP do
     do: get("#{@api_v4}/commitment_of_traders_report_analysis/#{symbol}")
 
   @doc """
+  Fetches a list of senate trading for a symbol from the FMP API.
+  """
+  def senate_trading(symbol), do: get("#{@api_v4}/senate-trading", %{symbol: symbol})
+
+  @doc """
+  Fetches a list of senate disclosures for a symbol from the FMP API.
+  """
+  def senate_disclosures(symbol), do: get("#{@api_v4}/senate-disclosures", %{symbol: symbol})
+
+  @doc """
+  Fetches ciks by name from the FMP API.
+  """
+  def cik_mapper_name(params \\ %{}),
+    do: get("#{@api_v4}/mapper-cik-name", params)
+
+  @doc """
+  Fetches ciks by symbol from the FMP API.
+  """
+  def cik_mapper_company(symbol), do: get("#{@api_v4}/mapper-cik-company/#{symbol}")
+
+  @doc """
   Fetches the symbols of all companies from the FMP API.
   """
   def symbols, do: get("#{@api_v3}/stock/list")
@@ -673,9 +767,50 @@ defmodule FMP do
   def symbols_tradable, do: get("#{@api_v3}/available-traded/list")
 
   @doc """
+  Fetches the symbols of all indexes from the FMP API.
+  """
+  def symbols_indexes, do: get("#{@api_v3}/symbol/available-indexes")
+
+  @doc """
+  Fetches the symbols of all euro next companies from the FMP API.
+  """
+  def symbols_euronext, do: get("#{@api_v3}/symbol/available-euronext")
+
+  @doc """
+  Fetches the symbols of all TSX companies from the FMP API.
+  """
+  def symbols_tsx, do: get("#{@api_v3}/symbol/available-tsx")
+
+  @doc """
+  Fetches the symbols of all crypto currencies from the FMP API.
+  """
+  def symbols_crypto, do: get("#{@api_v3}/symbol/available-cryptocurrencies")
+
+  @doc """
+  Fetches the symbols of all forex currencies from the FMP API.
+  """
+  def symbols_forex, do: get("#{@api_v3}/symbol/available-forex-currency-pairs")
+
+  @doc """
+  Fetches the symbols of all commodities from the FMP API.
+  """
+  def symbols_commodities, do: get("#{@api_v3}/symbol/available-commodities")
+
+  @doc """
   Fetches the symbol changes from the FMP API.
   """
   def symbol_changes, do: get("#{@api_v4}/symbol_change")
+
+  @doc """
+  Fetches mutual funds by name from the FMP API.
+  """
+  def mutual_fund(name), do: get("#{@api_v4}/mutual-fund-holdings/name", %{name: name})
+
+  @doc """
+  Fetches mutual funds portfolio dates from the FMP API.
+  """
+  def mutual_fund_portfolio_dates(params \\ %{}),
+    do: get("#{@api_v4}/mutual-fund-holdings/portfolio-date", params)
 
   @doc """
   Fetches the symbols of all ETFs from the FMP API.
@@ -693,9 +828,20 @@ defmodule FMP do
   end
 
   @doc """
+  Fetches the portfolio dates of an ETF from the FMP API.
+  """
+  def etf_portfolio_dates(params \\ %{}),
+    do: get("#{@api_v4}/etf-holdings/portfolio-date", params)
+
+  @doc """
   Fetches the holdings of an ETF from the FMP API.
   """
   def etf_holdings(symbol), do: get("#{@api_v3}/etf-holder/#{symbol}")
+
+  @doc """
+  Fetches the historical holdings of an ETF from the FMP API.
+  """
+  def etf_holdings_historical(params \\ %{}), do: get("#{@api_v4}/etf-holdings", params)
 
   @doc """
   Fetches the stock exposure of an ETF from the FMP API.
@@ -750,6 +896,21 @@ defmodule FMP do
   def top_active, do: get("#{@api_v3}/stock_market/most-active")
 
   @doc """
+  Fetches market risk premiums for each country from the FMP API.
+  """
+  def market_risk_preminum, do: get("#{@api_v4}/market-risk-premium")
+
+  @doc """
+  Fetches treasury rates from the FMP API.
+  """
+  def treasury_rates(params \\ %{}), do: get("#{@api_v4}/treasury", params)
+
+  @doc """
+  Fetches economic indicators from the FMP API.
+  """
+  def ecomonic_indicators(params \\ %{}), do: get("#{@api_v4}/economic", params)
+
+  @doc """
   Fetches the list of FMP articles from the FMP API.
   """
   def fmp_articles(params \\ %{}), do: get("#{@api_v3}/fmp/articles", params)
@@ -791,6 +952,12 @@ defmodule FMP do
   def rss_feed(page \\ 0), do: get("#{@api_v3}/rss_feed", %{page: page})
 
   @doc """
+  Fetches the insider trading rss feed from the FMP API.
+  """
+  def rss_feed_insider_trading(page \\ 0),
+    do: get("#{@api_v4}/insider-trading-rss-feed", %{page: page})
+
+  @doc """
   Fetches the price targets rss feed from the FMP API.
   """
   def rss_feed_price_targets(page \\ 0),
@@ -803,9 +970,28 @@ defmodule FMP do
     do: get("#{@api_v4}/upgrades-downgrades-rss-feed", %{page: page})
 
   @doc """
+  Fetches the stock news sentiment rss feed from the FMP API.
   """
   def rss_feed_stock_news_sentiment(page \\ 0),
     do: get("#{@api_v4}/stock-news-sentiments-rss-feed", %{page: page})
+
+  @doc """
+  Fetches the institutional ownership rss feed from the FMP API.
+  """
+  def rss_feed_institutional_ownership(page \\ 0),
+    do: get("#{@api_v4}/institutional-ownership/rss_feed", %{page: page})
+
+  @doc """
+  Fetches the senate trading rss feed from the FMP API.
+  """
+  def rss_feed_senate_trading(page \\ 0),
+    do: get("#{@api_v4}/senate-trading-rss-feed", %{page: page})
+
+  @doc """
+  Fetches the senate disclosures rss feed from the FMP API.
+  """
+  def rss_feed_senate_disclosures(page \\ 0),
+    do: get("#{@api_v4}/senate-disclosures-rss-feed", %{page: page})
 
   @doc """
   Search via ticker and company name from the FMP API.
@@ -824,6 +1010,11 @@ defmodule FMP do
   """
   def search_name(query, params \\ %{}),
     do: get("#{@api_v3}/search-name", Map.merge(%{query: query}, params))
+
+  @doc """
+  Search for institutions from the FMP API.
+  """
+  def search_institutions(name), do: get("#{@api_v4}/institutional-ownership/name", %{name: name})
 
   @doc """
   Screen stocks from the FMP API.
