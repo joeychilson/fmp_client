@@ -1576,6 +1576,7 @@ defmodule FMP do
     dcf: 190.7567806294802,
     symbol: "AAPL"
   }
+  ```
   """
   def discounted_cash_flow(symbol) do
     case get("#{@api_v3}/discounted-cash-flow/#{symbol}") do
@@ -1699,6 +1700,7 @@ defmodule FMP do
       costofDebt: 2.44
     },
   ]
+  ```
   """
   def advanced_discounted_cash_flow(symbol),
     do: get("#{@api_v4}/advanced_discounted_cash_flow", %{symbol: symbol})
@@ -2799,6 +2801,7 @@ defmodule FMP do
       twitterSentiment: 0
     },
   ]
+  ```
   """
   def social_sentiment(symbol, page \\ 0),
     do: get("#{@api_v4}/historical/social-sentiment", %{symbol: symbol, page: page})
@@ -3018,6 +3021,7 @@ defmodule FMP do
       url: "https://www.sec.gov/Archives/edgar/data/320193/000032019323000006/0000320193-23-000006-index.htm"
     },
   ]
+  ```
   """
   def esg_scores(symbol),
     do: get("#{@api_v4}/esg-environmental-social-governance-data", %{symbol: symbol})
@@ -4579,6 +4583,7 @@ defmodule FMP do
       utilitiesChangesPercentage: -0.2837
     },
   ]
+  ```
   """
   def sectors_performance_historical(params \\ %{}),
     do: get("#{@api_v3}/historical-sectors-performance", params)
@@ -5621,6 +5626,7 @@ defmodule FMP do
       volume: 613
     },
   ]
+  ```
   """
   def screener(params \\ %{}), do: get("#{@api_v3}/stock-screener", params)
 
