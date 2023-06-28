@@ -14,6 +14,87 @@ defmodule FMP do
     do: get("#{@api_v3}/delisted-companies", params)
 
   @doc """
+  Fetches a list of companies in the S&P 500 from the FMP API.
+  """
+  def sp500_companies, do: get("#{@api_v3}/sp500_constituent")
+
+  @doc """
+  Fetches the history of companies in the S&P 500 from the FMP API.
+  """
+  def sp500_companies_historical, do: get("#{@api_v3}/historical/sp500_constituent")
+
+  @doc """
+  Fetches a company by cik from the FMP API.
+  """
+  def company_by_cik(cik) do
+    case get("#{@api_v3}/cik/#{cik}") do
+      {:ok, resp} -> {:ok, hd(resp)}
+      {:error, _} = error -> error
+    end
+  end
+
+  @doc """
+  Fetches a company by cusip from the FMP API.
+  """
+  def company_by_cusip(cusip) do
+    case get("#{@api_v3}/cusip/#{cusip}") do
+      {:ok, resp} -> {:ok, hd(resp)}
+      {:error, _} = error -> error
+    end
+  end
+
+  @doc """
+  Fetches a company profile from the FMP API.
+  """
+  def company_profile(symbol) do
+    case get("#{@api_v3}/profile/#{symbol}") do
+      {:ok, resp} -> {:ok, hd(resp)}
+      {:error, _} = error -> error
+    end
+  end
+
+  @doc """
+  Fetches a company's outlook from the FMP API.
+  """
+  def company_outlook(symbol), do: get("#{@api_v4}/company-outlook", %{symbol: symbol})
+
+  @doc """
+  Fetches a company's core information from the FMP API.
+  """
+  def company_core_information(symbol) do
+    case get("#{@api_v4}/company-core-information", %{symbol: symbol}) do
+      {:ok, resp} -> {:ok, hd(resp)}
+      {:error, _} = error -> error
+    end
+  end
+
+  @doc """
+  Fetches a company's historical employee count from the FMP API.
+  """
+  def employee_count_historical(symbol),
+    do: get("#{@api_v4}/historical/employee_count", %{symbol: symbol})
+
+  @doc """
+  Fetches a company's shares float from the FMP API.
+  """
+  def shares_float(symbol) do
+    case get("#{@api_v4}/shares_float", %{symbol: symbol}) do
+      {:ok, resp} -> {:ok, hd(resp)}
+      {:error, _} = error -> error
+    end
+  end
+
+  @doc """
+  Fetches the list of cik from the FMP API.
+  """
+  def cik_list, do: get("#{@api_v3}/cik_list")
+
+  @doc """
+  Searches for a cik by name from the FMP API.
+  """
+  def cik_search(name), do: get("#{@api_v3}/cik-search/#{name}")
+
+  @doc """
   Fetches the earnings calendar from the FMP API.
   """
   def earnings_calendar(params \\ %{}), do: get("#{@api_v3}/earning_calendar", params)
@@ -27,7 +108,7 @@ defmodule FMP do
   @doc """
   Fetches the historical earnings calendar for a given symbol from the FMP API.
   """
-  def historical_earnings_calendar(symbol, params \\ %{}),
+  def earnings_calendar_historical(symbol, params \\ %{}),
     do: get("#{@api_v3}/historical/earning_calendar/#{symbol}", params)
 
   @doc """
@@ -62,7 +143,7 @@ defmodule FMP do
   @doc """
   Fetches the historical dividend calendar for a given symbol from the FMP API.
   """
-  def historical_dividends(symbol),
+  def dividends_historical(symbol),
     do: get("#{@api_v3}/historical-price-full/stock_dividend/#{symbol}")
 
   @doc """
@@ -76,28 +157,6 @@ defmodule FMP do
   """
   def financial_reports_dates(symbol),
     do: get("#{@api_v4}/financial-reports-dates", %{symbol: symbol})
-
-  @doc """
-  Fetches a list of a company's earnings call transcripts from the FMP API.
-  """
-  def earnings_call_transcript(symbol),
-    do: get("#{@api_v4}/earning_call_transcript", %{symbol: symbol})
-
-  @doc """
-  Fetches the earnings call transcripts for a company for a given year.
-  """
-  def earnings_call_transcript(symbol, year),
-    do: get("#{@api_v4}/batch_earning_call_transcript/#{symbol}", %{year: year})
-
-  @doc """
-  Fetches the earnings call transcripts for a company for a given year and quarter.
-  """
-  def earnings_call_transcript(symbol, year, quarter) do
-    case get("#{@api_v3}/earning_call_transcript/#{symbol}", %{year: year, quarter: quarter}) do
-      {:ok, resp} -> {:ok, hd(resp)}
-      {:error, _} = error -> error
-    end
-  end
 
   @doc """
   Fetches a company's income statements from the FMP API.
@@ -252,13 +311,13 @@ defmodule FMP do
   @doc """
   Fetches a company's historical discounted cash flow from the FMP API.
   """
-  def historical_discounted_cash_flow(symbol, params \\ %{}),
+  def discounted_cash_flow_historical(symbol, params \\ %{}),
     do: get("#{@api_v3}/historical-discounted-cash-flow-statement/#{symbol}", params)
 
   @doc """
   Fetches a company's historical daily discounted cash flow from the FMP API.
   """
-  def historical_daily_discounted_cash_flow(symbol, params \\ %{}),
+  def discounted_cash_flow_historical_daily(symbol, params \\ %{}),
     do: get("#{@api_v3}/historical-daily-discounted-cash-flow/#{symbol}", params)
 
   @doc """
@@ -303,7 +362,7 @@ defmodule FMP do
   @doc """
   Fetches a company's historical market capitalization from the FMP API.
   """
-  def historical_market_cap(symbol, params \\ %{}),
+  def market_cap_historical(symbol, params \\ %{}),
     do: get("#{@api_v3}/historical-market-capitalization/#{symbol}", params)
 
   @doc """
@@ -311,31 +370,6 @@ defmodule FMP do
   """
   def peers(symbol) do
     case get("#{@api_v4}/stock_peers", %{symbol: symbol}) do
-      {:ok, resp} -> {:ok, hd(resp)}
-      {:error, _} = error -> error
-    end
-  end
-
-  @doc """
-  Fetches a company profile from the FMP API.
-  """
-  def profile(symbol) do
-    case get("#{@api_v3}/profile/#{symbol}") do
-      {:ok, resp} -> {:ok, hd(resp)}
-      {:error, _} = error -> error
-    end
-  end
-
-  @doc """
-  Fetches a company's outlook from the FMP API.
-  """
-  def company_outlook(symbol), do: get("#{@api_v4}/company-outlook", %{symbol: symbol})
-
-  @doc """
-  Fetches a company's core information from the FMP API.
-  """
-  def company_core_information(symbol) do
-    case get("#{@api_v4}/company-core-information", %{symbol: symbol}) do
       {:ok, resp} -> {:ok, hd(resp)}
       {:error, _} = error -> error
     end
@@ -370,7 +404,7 @@ defmodule FMP do
   @doc """
   Fetches all SIC information from the FMP API.
   """
-  def all_sics, do: get("#{@api_v4}/standard_industrial_classification/all")
+  def sic_all, do: get("#{@api_v4}/standard_industrial_classification/all")
 
   @doc """
   Fetches a list of SIC codes from the FMP API.
@@ -379,31 +413,15 @@ defmodule FMP do
     do: get("#{@api_v4}/standard_industrial_classification_list", params)
 
   @doc """
-  Fetches a company's historical employee count from the FMP API.
-  """
-  def historical_employee_count(symbol),
-    do: get("#{@api_v4}/historical/employee_count", %{symbol: symbol})
-
-  @doc """
-  Fetches a company's shares float from the FMP API.
-  """
-  def shares_float(symbol) do
-    case get("#{@api_v4}/shares_float", %{symbol: symbol}) do
-      {:ok, resp} -> {:ok, hd(resp)}
-      {:error, _} = error -> error
-    end
-  end
-
-  @doc """
   Fetches a company's historical chart from the FMP API.
   """
-  def historical_chart(interval, symbol),
+  def chart_historical(interval, symbol),
     do: get("#{@api_v3}/historical-chart/#{interval}/#{symbol}")
 
   @doc """
   Fetches historical chart with full data for the symbols from the FMP API.
   """
-  def historical_chart_full(symbols, params \\ %{}),
+  def chart_historical_full(symbols, params \\ %{}),
     do: get("#{@api_v3}/historical-price-full/#{symbols}", params)
 
   @doc """
@@ -514,8 +532,30 @@ defmodule FMP do
   @doc """
   Fetches a company's historical rating from the FMP API.
   """
-  def historical_rating(symbol, params \\ %{}),
+  def rating_historical(symbol, params \\ %{}),
     do: get("#{@api_v3}/historical-rating/#{symbol}", params)
+
+  @doc """
+  Fetches a list of a company's earnings call transcripts from the FMP API.
+  """
+  def earnings_call_transcript(symbol),
+    do: get("#{@api_v4}/earning_call_transcript", %{symbol: symbol})
+
+  @doc """
+  Fetches the earnings call transcripts for a company for a given year.
+  """
+  def earnings_call_transcript(symbol, year),
+    do: get("#{@api_v4}/batch_earning_call_transcript/#{symbol}", %{year: year})
+
+  @doc """
+  Fetches the earnings call transcripts for a company for a given year and quarter.
+  """
+  def earnings_call_transcript(symbol, year, quarter) do
+    case get("#{@api_v3}/earning_call_transcript/#{symbol}", %{year: year, quarter: quarter}) do
+      {:ok, resp} -> {:ok, hd(resp)}
+      {:error, _} = error -> error
+    end
+  end
 
   @doc """
   Fetches a list of company's notes from the FMP API.
@@ -539,6 +579,37 @@ defmodule FMP do
   """
   def esg_sector_benchmarks(year),
     do: get("#{@api_v4}/esg-sector-benchmark", %{year: year})
+
+  @doc """
+  Fetches a company's mutual fund holders from the FMP API.
+  """
+  def mutual_fund_holders(symbol), do: get("#{@api_v3}/mutual-fund-holder/#{symbol}")
+
+  @doc """
+  Fetches a company's institutional holders from the FMP API.
+  """
+  def institutional_holders(symbol), do: get("#{@api_v3}/institutional-holder/#{symbol}")
+
+  @doc """
+  Fetches form 13F for a given CIK from the FMP API.
+  """
+  def form_13f(cik, params \\ %{}), do: get("#{@api_v4}/form-thirteen/#{cik}", params)
+
+  @doc """
+  Fetches form 13F filing dates for a given CIK from the FMP API.
+  """
+  def form_13f_filing_dates(cik), do: get("#{@api_v4}/form-thirteen-date/#{cik}")
+
+  @doc """
+  Fetches form 13F allocation dates from the FMP API.
+  """
+  def form_13f_asset_allocation_dates, do: get("#{@api_v4}/form-thirteen-allocation-date")
+
+  @doc """
+  Fetches form 13F asset allocations for a given date from the FMP API.
+  """
+  def form_13f_asset_allocations(date),
+    do: get("#{@api_v4}/form-thirteen-allocation", %{date: date})
 
   @doc """
   Fetches acquistion of beneficial ownership from the FMP API.
@@ -599,7 +670,7 @@ defmodule FMP do
   @doc """
   Fetches the symbols of all tradable companies from the FMP API.
   """
-  def tradable_symbols, do: get("#{@api_v3}/available-traded/list")
+  def symbols_tradable, do: get("#{@api_v3}/available-traded/list")
 
   @doc """
   Fetches the symbol changes from the FMP API.
@@ -644,18 +715,24 @@ defmodule FMP do
   @doc """
   Fetches sectors PE ratios for a given date from the FMP API.
   """
-  def sectors_pe_ratios(date), do: get("#{@api_v4}/sector_price_earning_ratio", %{date: date})
+  def pe_ratios_sectors(date), do: get("#{@api_v4}/sector_price_earning_ratio", %{date: date})
 
   @doc """
   Fetches industries PE ratios for a given date from the FMP API.
   """
-  def industries_pe_ratios(date),
+  def pe_ratios_industries(date),
     do: get("#{@api_v4}/industry_price_earning_ratio", %{date: date})
 
   @doc """
   Fetches sectors performance from the FMP API.
   """
   def sectors_performance, do: get("#{@api_v3}/sector_performance")
+
+  @doc """
+  Fetches historical sectors performance from the FMP API.
+  """
+  def sectors_performance_historical(params \\ %{}),
+    do: get("#{@api_v3}/historical-sectors-performance", params)
 
   @doc """
   Fetches top gainers from the FMP API.
@@ -670,13 +747,7 @@ defmodule FMP do
   @doc """
   Fetches most active stocks from the FMP API.
   """
-  def most_active, do: get("#{@api_v3}/stock_market/most-active")
-
-  @doc """
-  Fetches historical sectors performance from the FMP API.
-  """
-  def historical_sectors_performance(params \\ %{}),
-    do: get("#{@api_v3}/historical-sectors-performance", params)
+  def top_active, do: get("#{@api_v3}/stock_market/most-active")
 
   @doc """
   Fetches the list of FMP articles from the FMP API.
@@ -686,22 +757,22 @@ defmodule FMP do
   @doc """
   Fetches the list of stock news from the FMP API.
   """
-  def stock_news(params \\ %{}), do: get("#{@api_v3}/stock_news", params)
+  def news_stock(params \\ %{}), do: get("#{@api_v3}/stock_news", params)
 
   @doc """
   Fetches the list of crypto news from the FMP API.
   """
-  def crypto_news(params \\ %{}), do: get("#{@api_v4}/crypto_news", params)
+  def news_crypto(params \\ %{}), do: get("#{@api_v4}/crypto_news", params)
 
   @doc """
   Fetches the list of forex news from the FMP API.
   """
-  def forex_news(params \\ %{}), do: get("#{@api_v4}/forex_news", params)
+  def news_forex(params \\ %{}), do: get("#{@api_v4}/forex_news", params)
 
   @doc """
   Fetches the list of general news from the FMP API.
   """
-  def general_news(params \\ %{}), do: get("#{@api_v4}/general_news", params)
+  def news_general(params \\ %{}), do: get("#{@api_v4}/general_news", params)
 
   @doc """
   Fetches the list of press releases from the FMP API.
@@ -722,18 +793,18 @@ defmodule FMP do
   @doc """
   Fetches the price targets rss feed from the FMP API.
   """
-  def price_targets_rss_feed(page \\ 0),
+  def rss_feed_price_targets(page \\ 0),
     do: get("#{@api_v4}/price-target-rss-feed", %{page: page})
 
   @doc """
   Fetches the upgrades and downgrades rss feed from the FMP API.
   """
-  def upgrades_and_downgrades_rss_feed(page \\ 0),
+  def rss_feed_upgrades_and_downgrades(page \\ 0),
     do: get("#{@api_v4}/upgrades-downgrades-rss-feed", %{page: page})
 
   @doc """
   """
-  def stock_news_sentiment_rss_feed(page \\ 0),
+  def rss_feed_stock_news_sentiment(page \\ 0),
     do: get("#{@api_v4}/stock-news-sentiments-rss-feed", %{page: page})
 
   @doc """
