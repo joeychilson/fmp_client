@@ -1,4 +1,4 @@
-# FMP 
+# FMP
 
 An Elixir-based HTTP Client for financialmodelingprep.com
 
@@ -9,7 +9,7 @@ An Elixir-based HTTP Client for financialmodelingprep.com
 ```elixir
 def deps do
   [
-    {:fmp_client, "~> 0.1.0"}
+    {:fmp_client, "~> 0.1.1"}
   ]
 end
 ```
