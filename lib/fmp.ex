@@ -5633,8 +5633,6 @@ defmodule FMP do
   @doc false
   defp get(url, params \\ %{}) do
     api_key = Application.get_env(:fmp_client, :api_key)
-    if api_key == nil, do: {:error, :api_key_not_set}
-
     url = if params == %{}, do: url, else: "#{url}?#{URI.encode_query(params)}"
 
     url =
@@ -5645,6 +5643,7 @@ defmodule FMP do
     case HTTPoison.get(url) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         case Jason.decode!(body, keys: :atoms) do
+          %{"Error Message": message} -> {:error, message}
           [] -> {:error, :not_found}
           data -> {:ok, data}
         end
