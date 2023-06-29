@@ -1,7 +1,7 @@
 defmodule FMP.MixProject do
   use Mix.Project
 
-  @version "0.1.0"
+  @version "0.1.1"
   @description "An Elixir-based HTTP Client for financialmodelingprep.com"
 
   def project do
