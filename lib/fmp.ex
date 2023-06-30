@@ -27,7 +27,7 @@ defmodule FMP do
   @doc """
   Fetches a list of all delisted companies from the FMP API.
 
-  ## Parameters
+  ## Optional
 
   * `:page` - The page number to fetch.
 
@@ -45,8 +45,8 @@ defmodule FMP do
   ]
   ```
   """
-  def companies_delisted(params \\ %{}),
-    do: get("#{@api_v3}/delisted-companies", params)
+  def companies_delisted(opts \\ %{}),
+    do: get("#{@api_v3}/delisted-companies", opts)
 
   @doc """
   Fetches a list of companies in the S&P 500 from the FMP API.
@@ -159,7 +159,7 @@ defmodule FMP do
   @doc """
   Fetches a company by cik from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `cik` - The CIK of the company.
 
@@ -184,7 +184,7 @@ defmodule FMP do
   @doc """
   Fetches a company by cusip from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `cusip` - The CUSIP of the company.
 
@@ -208,7 +208,7 @@ defmodule FMP do
   @doc """
   Fetches a company profile from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
@@ -265,7 +265,7 @@ defmodule FMP do
   @doc """
   Fetches a company's outlook from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
@@ -300,7 +300,7 @@ defmodule FMP do
   @doc """
   Fetches a company's core information from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
@@ -334,7 +334,7 @@ defmodule FMP do
   @doc """
   Fetches a company's historical employee count from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
@@ -362,7 +362,7 @@ defmodule FMP do
   @doc """
   Fetches a company's shares float from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
@@ -405,7 +405,7 @@ defmodule FMP do
   @doc """
   Searches for a cik by name from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `name` - The name of the company.
 
@@ -425,7 +425,7 @@ defmodule FMP do
   @doc """
   Fetches the earnings calendar from the FMP API.
 
-  ## Parameters
+  ## Optional
 
   * `from` - The start date of the earnings calendar.
   * `to` - The end date of the earnings calendar.
@@ -448,12 +448,12 @@ defmodule FMP do
   ]
   ```
   """
-  def earnings_calendar(params \\ %{}), do: get("#{@api_v3}/earning_calendar", params)
+  def earnings_calendar(opts \\ %{}), do: get("#{@api_v3}/earning_calendar", opts)
 
   @doc """
   Fetches the confirmed earnings calendar from the FMP API.
 
-  ## Parameters
+  ## Optional
 
   * `from` - The start date of the earnings calendar.
   * `to` - The end date of the earnings calendar.
@@ -475,17 +475,17 @@ defmodule FMP do
   ]
   ```
   """
-  def earnings_calendar_confirmed(params \\ %{}),
-    do: get("#{@api_v4}/earning-calendar-confirmed", params)
+  def earnings_calendar_confirmed(opts \\ %{}),
+    do: get("#{@api_v4}/earning-calendar-confirmed", opts)
 
   @doc """
   Fetches the historical earnings calendar for a given symbol from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
-  ## Parameters
+  ## Optional
 
   * `from` - The start date of the earnings calendar.
   * `to` - The end date of the earnings calendar.
@@ -508,13 +508,13 @@ defmodule FMP do
   ]
   ```
   """
-  def earnings_calendar_historical(symbol, params \\ %{}),
-    do: get("#{@api_v3}/historical/earning_calendar/#{symbol}", params)
+  def earnings_calendar_historical(symbol, opts \\ %{}),
+    do: get("#{@api_v3}/historical/earning_calendar/#{symbol}", opts)
 
   @doc """
   Fetches the IPO calendar from the FMP API.
 
-  ## Parameters
+  ## Optional
 
   * `from` - The start date of the IPO calendar.
   * `to` - The end date of the IPO calendar.
@@ -536,12 +536,12 @@ defmodule FMP do
   ]
   ```
   """
-  def ipo_calendar(params \\ %{}), do: get("#{@api_v3}/ipo_calendar", params)
+  def ipo_calendar(opts \\ %{}), do: get("#{@api_v3}/ipo_calendar", opts)
 
   @doc """
   Fetches the IPO calendar prospectus from the FMP API.
 
-  ## Parameters
+  ## Optional
 
   * `from` - The start date of the IPO calendar.
   * `to` - The end date of the IPO calendar.
@@ -568,13 +568,13 @@ defmodule FMP do
   ]
   ```
   """
-  def ipo_calendar_prospectus(params \\ %{}),
-    do: get("#{@api_v4}/ipo-calendar-prospectus", params)
+  def ipo_calendar_prospectus(opts \\ %{}),
+    do: get("#{@api_v4}/ipo-calendar-prospectus", opts)
 
   @doc """
   Fetches the confirmed IPO calendar from the FMP API.
 
-  ## Parameters
+  ## Optional
 
   * `from` - The start date of the IPO calendar.
   * `to` - The end date of the IPO calendar.
@@ -595,13 +595,13 @@ defmodule FMP do
   ]
   ```
   """
-  def ipo_calendar_confirmed(params \\ %{}),
-    do: get("#{@api_v4}/ipo-calendar-confirmed", params)
+  def ipo_calendar_confirmed(opts \\ %{}),
+    do: get("#{@api_v4}/ipo-calendar-confirmed", opts)
 
   @doc """
   Fetches the stock split calendar from the FMP API.
 
-  ## Parameters
+  ## Optional
 
   * `from` - The start date of the stock split calendar.
   * `to` - The end date of the stock split calendar.
@@ -620,13 +620,13 @@ defmodule FMP do
   ]
   ```
   """
-  def stock_split_calendar(params \\ %{}),
-    do: get("#{@api_v3}/stock_split_calendar", params)
+  def stock_split_calendar(opts \\ %{}),
+    do: get("#{@api_v3}/stock_split_calendar", opts)
 
   @doc """
   Fetches the dividend calendar from the FMP API.
 
-  ## Parameters
+  ## Optional
 
   * `from` - The start date of the dividend calendar.
   * `to` - The end date of the dividend calendar.
@@ -648,13 +648,13 @@ defmodule FMP do
   ]
   ```
   """
-  def dividends_calendar(params \\ %{}),
-    do: get("#{@api_v3}/stock_dividend_calendar", params)
+  def dividends_calendar(opts \\ %{}),
+    do: get("#{@api_v3}/stock_dividend_calendar", opts)
 
   @doc """
   Fetches the historical dividend calendar for a given symbol from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
@@ -683,7 +683,7 @@ defmodule FMP do
   @doc """
   Fetches the economoic calendar from the FMP API.
 
-  ## Parameters
+  ## Optional
 
   * `from` - The start date of the economic calendar.
   * `to` - The end date of the economic calendar.
@@ -707,13 +707,13 @@ defmodule FMP do
   ]
   ```
   """
-  def economic_calendar(params \\ %{}),
-    do: get("#{@api_v3}/economic_calendar", params)
+  def economic_calendar(opts \\ %{}),
+    do: get("#{@api_v3}/economic_calendar", opts)
 
   @doc """
   Fetches a company's financial reports dates from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
@@ -737,11 +737,11 @@ defmodule FMP do
   @doc """
   Fetches a company's income statements from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `cik_or_symbol` - The CIK or symbol of the company.
 
-  ## Parameters
+  ## Optional
 
   * `period` - The period of the income statements. Can be `quarter` or `annual`.
   * `limit` - The number of income statements to return.
@@ -793,17 +793,17 @@ defmodule FMP do
   ]
   ```
   """
-  def income_statements(cik_or_symbol, params \\ %{}),
-    do: get("#{@api_v3}/income-statement/#{cik_or_symbol}", params)
+  def income_statements(cik_or_symbol, opts \\ %{}),
+    do: get("#{@api_v3}/income-statement/#{cik_or_symbol}", opts)
 
   @doc """
   Fetches a company's income statement growth from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
-  ## Parameters
+  ## Optional
 
   * `period` - The period of the income statement growth. Can be `quarter` or `annual`.
   * `limit` - The number of income statement growths to return.
@@ -846,17 +846,17 @@ defmodule FMP do
   ]
   ```
   """
-  def income_statement_growth(symbol, params \\ %{}),
-    do: get("#{@api_v3}/income-statement-growth/#{symbol}", params)
+  def income_statement_growth(symbol, opts \\ %{}),
+    do: get("#{@api_v3}/income-statement-growth/#{symbol}", opts)
 
   @doc """
   Fetches a company's balance sheets from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `cik_or_symbol` - The CIK or symbol of the company.
 
-  ## Parameters
+  ## Optional
 
   * `period` - The period of the balance sheets. Can be `quarter` or `annual`.
   * `limit` - The number of balance sheets to return.
@@ -920,17 +920,17 @@ defmodule FMP do
   ]
   ```
   """
-  def balance_sheets(cik_or_symbol, params \\ %{}),
-    do: get("#{@api_v3}/balance-sheet-statement/#{cik_or_symbol}", params)
+  def balance_sheets(cik_or_symbol, opts \\ %{}),
+    do: get("#{@api_v3}/balance-sheet-statement/#{cik_or_symbol}", opts)
 
   @doc """
   Fetches a company's balance sheet growth from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
-  ## Parameters
+  ## Optional
 
   * `period` - The period of the balance sheet growths. Can be `quarter` or `annual`.
   * `limit` - The number of balance sheet growths to return.
@@ -986,17 +986,17 @@ defmodule FMP do
   ]
   ```
   """
-  def balance_sheet_growth(symbol, params \\ %{}),
-    do: get("#{@api_v3}/balance-sheet-statement-growth/#{symbol}", params)
+  def balance_sheet_growth(symbol, opts \\ %{}),
+    do: get("#{@api_v3}/balance-sheet-statement-growth/#{symbol}", opts)
 
   @doc """
   Fetches a company's cash flow statements from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `cik_or_symbol` - The CIK or symbol of the company.
 
-  ## Parameters
+  ## Optional
 
   * `period` - The period of the cash flow statements. Can be `quarter` or `annual`.
   * `limit` - The number of cash flow statements to return.
@@ -1050,17 +1050,17 @@ defmodule FMP do
   ]
   ```
   """
-  def cash_flow_statements(cik_or_symbol, params \\ %{}),
-    do: get("#{@api_v3}/cash-flow-statement/#{cik_or_symbol}", params)
+  def cash_flow_statements(cik_or_symbol, opts \\ %{}),
+    do: get("#{@api_v3}/cash-flow-statement/#{cik_or_symbol}", opts)
 
   @doc """
   Fetches a company's cash flow statement growth from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
-  ## Parameters
+  ## Optional
 
   * `period` - The period of the cash flow statement growth. Can be `quarter` or `annual`.
   * `limit` - The number of cash flow statement growths to return.
@@ -1107,17 +1107,17 @@ defmodule FMP do
   ]
   ```
   """
-  def cash_flow_statement_growth(symbol, params \\ %{}),
-    do: get("#{@api_v3}/cash-flow-statement-growth/#{symbol}", params)
+  def cash_flow_statement_growth(symbol, opts \\ %{}),
+    do: get("#{@api_v3}/cash-flow-statement-growth/#{symbol}", opts)
 
   @doc """
   Fetches a company's financial growth from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
-  ## Parameters
+  ## Optional
 
   * `period` - The period of the financial growth. Can be `quarter` or `annual`.
   * `limit` - The number of financial growths to return.
@@ -1168,13 +1168,13 @@ defmodule FMP do
   ]
   ```
   """
-  def financial_growth(symbol, params \\ %{}),
-    do: get("#{@api_v3}/financial-growth/#{symbol}", params)
+  def financial_growth(symbol, opts \\ %{}),
+    do: get("#{@api_v3}/financial-growth/#{symbol}", opts)
 
   @doc """
   Fetches a company's revenue product segmentation from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
@@ -1227,7 +1227,7 @@ defmodule FMP do
   @doc """
   Fetches a company's revenue geographic segmentation from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
@@ -1280,11 +1280,11 @@ defmodule FMP do
   @doc """
   Fetches a company's key metrics from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
-  ## Parameters
+  ## Optional
 
   * `period` - The period of the key metrics. Can be `quarter` or `annual`.
   * `limit` - The number of key metrics to return.
@@ -1348,16 +1348,16 @@ defmodule FMP do
   ]
   ```
   """
-  def key_metrics(symbol, params \\ %{}), do: get("#{@api_v3}/key-metrics/#{symbol}", params)
+  def key_metrics(symbol, opts \\ %{}), do: get("#{@api_v3}/key-metrics/#{symbol}", opts)
 
   @doc """
   Fetches a company's key metrics TTM from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
-  ## Parameters
+  ## Optional
 
   * `period` - The period of the key metrics. Can be `quarter` or `annual`.
   * `limit` - The number of key metrics to return.
@@ -1421,17 +1421,17 @@ defmodule FMP do
   ]
   ```
   """
-  def key_metrics_ttm(symbol, params \\ %{}),
-    do: get("#{@api_v3}/key-metrics-ttm/#{symbol}", params)
+  def key_metrics_ttm(symbol, opts \\ %{}),
+    do: get("#{@api_v3}/key-metrics-ttm/#{symbol}", opts)
 
   @doc """
   Fetches a company's financial ratios from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
-  ## Parameters
+  ## Optional
 
   * `period` - The period of the financial ratios. Can be `quarter` or `annual`.
   * `limit` - The number of financial ratios to return.
@@ -1495,12 +1495,12 @@ defmodule FMP do
   ]
   ```
   """
-  def financial_ratios(symbol, params \\ %{}), do: get("#{@api_v3}/ratios/#{symbol}", params)
+  def financial_ratios(symbol, opts \\ %{}), do: get("#{@api_v3}/ratios/#{symbol}", opts)
 
   @doc """
   Fetches a company's financial scores from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
@@ -1531,11 +1531,11 @@ defmodule FMP do
   @doc """
   Fetches a company's enterprise value from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
-  ## Parameters
+  ## Optional
 
   * `period` - The period of the enterprise value. Can be `quarter` or `annual`.
   * `limit` - The number of enterprise values to return.
@@ -1557,13 +1557,13 @@ defmodule FMP do
   ]
   ```
   """
-  def enterprise_value(symbol, params \\ %{}),
-    do: get("#{@api_v3}/enterprise-values/#{symbol}", params)
+  def enterprise_value(symbol, opts \\ %{}),
+    do: get("#{@api_v3}/enterprise-values/#{symbol}", opts)
 
   @doc """
   Fetches a company's discounted cash flow from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
@@ -1588,11 +1588,11 @@ defmodule FMP do
   @doc """
   Fetches a company's historical discounted cash flow from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
-  ## Parameters
+  ## Optional
 
   * `period` - The period of the discounted cash flow. Can be `quarter` or `annual`.
   * `limit` - The number of discounted cash flows to return.
@@ -1610,17 +1610,17 @@ defmodule FMP do
   ]
   ```
   """
-  def discounted_cash_flow_historical(symbol, params \\ %{}),
-    do: get("#{@api_v3}/historical-discounted-cash-flow-statement/#{symbol}", params)
+  def discounted_cash_flow_historical(symbol, opts \\ %{}),
+    do: get("#{@api_v3}/historical-discounted-cash-flow-statement/#{symbol}", opts)
 
   @doc """
   Fetches a company's historical daily discounted cash flow from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
-  ## Parameters
+  ## Optional
 
   * `limit` - The number of discounted cash flows to return.
 
@@ -1636,13 +1636,13 @@ defmodule FMP do
   ]
   ```
   """
-  def discounted_cash_flow_historical_daily(symbol, params \\ %{}),
-    do: get("#{@api_v3}/historical-daily-discounted-cash-flow/#{symbol}", params)
+  def discounted_cash_flow_historical_daily(symbol, opts \\ %{}),
+    do: get("#{@api_v3}/historical-daily-discounted-cash-flow/#{symbol}", opts)
 
   @doc """
   Fetches a company's advanced discounted cash flow TTM from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
@@ -1708,7 +1708,7 @@ defmodule FMP do
   @doc """
   Fetches a company's advanced levered discounted cash flow from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
@@ -1761,7 +1761,7 @@ defmodule FMP do
   @doc """
   Fetches a company's insider roster from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
@@ -1782,7 +1782,7 @@ defmodule FMP do
   @doc """
   Fetches a company's insider roster statistics from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
@@ -1814,7 +1814,7 @@ defmodule FMP do
   @doc """
   Fetches a company's key executives from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
@@ -1839,7 +1839,7 @@ defmodule FMP do
   @doc """
   Fetches a company's executive compensation from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
@@ -1873,7 +1873,7 @@ defmodule FMP do
   @doc """
   Fetches the executive compensation benchmark for a year from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `year` - The year to fetch the benchmark for.
 
@@ -1895,7 +1895,7 @@ defmodule FMP do
   @doc """
   Fetches a company's market capitalization from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
@@ -1919,11 +1919,11 @@ defmodule FMP do
   @doc """
   Fetches a company's historical market capitalization from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
-  ## Parameters
+  ## Optional
 
   * `limit` - The number of results to return.
 
@@ -1939,13 +1939,13 @@ defmodule FMP do
   ]
   ```
   """
-  def market_cap_historical(symbol, params \\ %{}),
-    do: get("#{@api_v3}/historical-market-capitalization/#{symbol}", params)
+  def market_cap_historical(symbol, opts \\ %{}),
+    do: get("#{@api_v3}/historical-market-capitalization/#{symbol}", opts)
 
   @doc """
   Fetches a company's peers from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
@@ -1968,7 +1968,7 @@ defmodule FMP do
   @doc """
   Fetches a company's SIC information using CIK from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `cik` - The CIK of the company.
 
@@ -1998,7 +1998,7 @@ defmodule FMP do
   @doc """
   Fetches a company's SIC information using symbol from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
@@ -2026,7 +2026,7 @@ defmodule FMP do
   @doc """
   Fetches SIC information for SIC code from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `sic_code` - The SIC code to fetch information for.
 
@@ -2073,7 +2073,7 @@ defmodule FMP do
   @doc """
   Fetches a list of SIC codes from the FMP API.
 
-  ## Parameters
+  ## Optional
 
   * `industry` - The industry to fetch SIC codes for.
   * `sicCode` - The SIC code to fetch information for.
@@ -2090,13 +2090,13 @@ defmodule FMP do
   ]
   ```
   """
-  def sic_list(params \\ %{}),
-    do: get("#{@api_v4}/standard_industrial_classification_list", params)
+  def sic_list(opts \\ %{}),
+    do: get("#{@api_v4}/standard_industrial_classification_list", opts)
 
   @doc """
   Fetches a company's historical chart from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `interval` - The interval to fetch historical data for.
   * `symbol` - The symbol of the company.
@@ -2122,11 +2122,11 @@ defmodule FMP do
   @doc """
   Fetches historical chart with full data for the symbols from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbols` - The symbols of the companies.
 
-  ## Parameters
+  ## Optional
 
   * `from` - The start date of the historical data.
   * `to` - The end date of the historical data.
@@ -2157,13 +2157,13 @@ defmodule FMP do
   }
   ```
   """
-  def chart_historical_full(symbols, params \\ %{}),
-    do: get("#{@api_v3}/historical-price-full/#{symbols}", params)
+  def chart_historical_full(symbols, opts \\ %{}),
+    do: get("#{@api_v3}/historical-price-full/#{symbols}", opts)
 
   @doc """
   Fetches quotes for an exchange from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `exchange` - The exchange to fetch quotes for.
 
@@ -2203,7 +2203,7 @@ defmodule FMP do
   @doc """
   Fetches quotes from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbols` - The symbols of the companies.
 
@@ -2243,7 +2243,7 @@ defmodule FMP do
   @doc """
   Fetches short quotes from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbols` - The symbols of the companies.
 
@@ -2264,7 +2264,7 @@ defmodule FMP do
   @doc """
   Fetches price changes from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbols` - The symbols of the companies.
 
@@ -2294,7 +2294,7 @@ defmodule FMP do
   @doc """
   Fetches a OTC prices from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbols` - The symbols of the companies.
 
@@ -2379,7 +2379,7 @@ defmodule FMP do
   @doc """
   Fetches a FOREX exchange rates for a pair from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `pair` - The pair of currencies.
 
@@ -2408,12 +2408,12 @@ defmodule FMP do
   @doc """
   Fetches a company's technical indicator from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
   * `interval` - The interval of the technical indicator.
 
-  ## Parameters
+  ## Optional
 
   * `period` - The period of the technical indicator.
   * `type` - The series type of the technical indicator.
@@ -2434,13 +2434,13 @@ defmodule FMP do
   ]
   ```
   """
-  def technical_indicator(symbol, interval, params \\ %{}),
-    do: get("#{@api_v3}/technical_indicator/#{interval}/#{symbol}", params)
+  def technical_indicator(symbol, interval, opts \\ %{}),
+    do: get("#{@api_v3}/technical_indicator/#{interval}/#{symbol}", opts)
 
   @doc """
   Fetches a company's historical stock splits from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
@@ -2465,7 +2465,7 @@ defmodule FMP do
   @doc """
   Fetches a company's price targets from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
@@ -2494,7 +2494,7 @@ defmodule FMP do
   @doc """
   Fetches a company's price targets consensus from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
@@ -2520,7 +2520,7 @@ defmodule FMP do
   @doc """
   Fetches a company's price target summary from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
@@ -2551,7 +2551,7 @@ defmodule FMP do
   @doc """
   Fetches a list of price targets by an analyst from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `analyst_name` - The name of the analyst.
 
@@ -2581,7 +2581,7 @@ defmodule FMP do
   @doc """
   Fetches a list of price targets by an analyst company from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `company` - The name of the analyst company.
 
@@ -2611,7 +2611,7 @@ defmodule FMP do
   @doc """
   Fetches a company's upgrades and downgrades from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
@@ -2641,7 +2641,7 @@ defmodule FMP do
   @doc """
   Fetches a company's upgrades and downgrades consensus from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
@@ -2669,7 +2669,7 @@ defmodule FMP do
   @doc """
   Fetches a list of upgrades and downgrades by an analyst company from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `company` - The name of the analyst company.
 
@@ -2699,7 +2699,7 @@ defmodule FMP do
   @doc """
   Fetches a company's rating from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
@@ -2737,11 +2737,11 @@ defmodule FMP do
   @doc """
   Fetches a company's historical rating from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
-  ## Parameters
+  ## Optional
 
   * `limit` - The number of results to return.
 
@@ -2771,13 +2771,13 @@ defmodule FMP do
   ]
   ```
   """
-  def rating_historical(symbol, params \\ %{}),
-    do: get("#{@api_v3}/historical-rating/#{symbol}", params)
+  def rating_historical(symbol, opts \\ %{}),
+    do: get("#{@api_v3}/historical-rating/#{symbol}", opts)
 
   @doc """
   Fetches a company's social sentiment from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
   * `page` - The page of the results to fetch.
@@ -2809,7 +2809,7 @@ defmodule FMP do
   @doc """
   Fetches a company's stock grade from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
@@ -2831,13 +2831,13 @@ defmodule FMP do
   ]
   ```
   """
-  def stock_grade(symbol, params \\ %{}),
-    do: get("#{@api_v4}/grade", Map.merge(%{symbol: symbol}, params))
+  def stock_grade(symbol, opts \\ %{}),
+    do: get("#{@api_v4}/grade", Map.merge(%{symbol: symbol}, opts))
 
   @doc """
   Fetches a company's earnings surprises from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
@@ -2860,11 +2860,11 @@ defmodule FMP do
   @doc """
   Fetches a company's analyst estimates from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
-  ## Parameters
+  ## Optional
 
   * `limit` - The number of results to return.
   * `period` - The period of the analyst estimates.
@@ -2900,13 +2900,13 @@ defmodule FMP do
   ]
   ```
   """
-  def analyst_estimates(symbol, params \\ %{}),
-    do: get("#{@api_v3}/analyst-estimates/#{symbol}", params)
+  def analyst_estimates(symbol, opts \\ %{}),
+    do: get("#{@api_v3}/analyst-estimates/#{symbol}", opts)
 
   @doc """
   Fetches a list of a company's earnings call transcripts from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
@@ -2924,7 +2924,7 @@ defmodule FMP do
   @doc """
   Fetches the earnings call transcripts for a company for a given year.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
   * `year` - The year of the earnings call transcript.
@@ -2949,7 +2949,7 @@ defmodule FMP do
   @doc """
   Fetches the earnings call transcripts for a company for a given year and quarter.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
   * `year` - The year of the earnings call transcript.
@@ -2977,7 +2977,7 @@ defmodule FMP do
   @doc """
   Fetches a list of company's notes from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
@@ -2999,7 +2999,7 @@ defmodule FMP do
   @doc """
   Fetches a company's ESG score from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
@@ -3029,7 +3029,7 @@ defmodule FMP do
   @doc """
   Fetches a company's ESG risk rating from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
@@ -3055,7 +3055,7 @@ defmodule FMP do
   @doc """
   Fetches a sector ESG score benchmarks from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `year` - The year of the ESG score benchmarks.
 
@@ -3080,7 +3080,7 @@ defmodule FMP do
   @doc """
   Fetches a company's mutual fund holders from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
@@ -3103,7 +3103,7 @@ defmodule FMP do
   @doc """
   Fetches a company's institutional holders from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
@@ -3125,7 +3125,7 @@ defmodule FMP do
   @doc """
   Fetches form 13F for a given CIK from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `cik` - The CIK of the company.
   * `date` - The date of the form 13F.
@@ -3159,7 +3159,7 @@ defmodule FMP do
   @doc """
   Fetches form 13F filing dates for a given CIK from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `cik` - The CIK of the company.
 
@@ -3191,7 +3191,7 @@ defmodule FMP do
   @doc """
   Fetches form 13F asset allocations for a given date from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `date` - The date of the form 13F asset allocation.
 
@@ -3210,7 +3210,7 @@ defmodule FMP do
   @doc """
   Fetches a company's institutional ownership from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
@@ -3244,7 +3244,7 @@ defmodule FMP do
   @doc """
   Fetches a company's institutional ownership from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
@@ -3299,11 +3299,11 @@ defmodule FMP do
   @doc """
   Fetches a company's institutional ownership percentage from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
-  ## Parameters
+  ## Optional
 
   * `date` - The date of the institutional ownership percentage.
   * `page` - The page number of the results.
@@ -3356,21 +3356,21 @@ defmodule FMP do
   ]
   ```
   """
-  def institutional_ownership_percentage(symbol, params \\ %{}),
+  def institutional_ownership_percentage(symbol, opts \\ %{}),
     do:
       get(
         "#{@api_v4}/institutional-ownership/institutional-holders/symbol-ownership-percent",
-        Map.merge(%{symbol: symbol}, params)
+        Map.merge(%{symbol: symbol}, opts)
       )
 
   @doc """
   Fetches a company's institutional ownership by shares held from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
-  ## Parameters
+  ## Optional
 
   * `date` - The date of the institutional ownership percentage.
   * `page` - The page number of the results.
@@ -3423,21 +3423,21 @@ defmodule FMP do
   ]
   ```
   """
-  def institutional_ownership_by_shares_held(symbol, params \\ %{}),
+  def institutional_ownership_by_shares_held(symbol, opts \\ %{}),
     do:
       get(
         "#{@api_v4}/institutional-ownership/institutional-holders/symbol-ownership",
-        Map.merge(%{symbol: symbol}, params)
+        Map.merge(%{symbol: symbol}, opts)
       )
 
   @doc """
   Fetches a institution's portfolio holdings from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `cik` - The CIK of the institution.
 
-  ## Parameters
+  ## Optional
 
   * `date` - The date of the portfolio holdings.
   * `page` - The page number of the results.
@@ -3491,14 +3491,13 @@ defmodule FMP do
   ]
   ```
   """
-  def institution_portfolio_holdings(cik, params \\ %{}),
-    do:
-      get("#{@api_v4}/institutional-ownership/portfolio-holdings", Map.merge(%{cik: cik}, params))
+  def institution_portfolio_holdings(cik, opts \\ %{}),
+    do: get("#{@api_v4}/institutional-ownership/portfolio-holdings", Map.merge(%{cik: cik}, opts))
 
   @doc """
   Fetches a institution's portfolio summary from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `cik` - The CIK of the institution.
 
@@ -3552,7 +3551,7 @@ defmodule FMP do
   @doc """
   Fetches a institution's portfolio dates from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `cik` - The CIK of the institution.
 
@@ -3573,12 +3572,12 @@ defmodule FMP do
   @doc """
   Fetches a institution's portfolio industry summary from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `cik` - The CIK of the institution.
   * `date` - The date of the portfolio holdings.
 
-  ## Parameters
+  ## Optional
 
   * `page` - The page number of the results.
 
@@ -3603,19 +3602,19 @@ defmodule FMP do
   ]
   ```
   """
-  def institution_industry_summary(cik, date, params \\ %{}) do
+  def institution_industry_summary(cik, date, opts \\ %{}) do
     cik = String.pad_leading(cik, 10, "0")
 
     get(
       "#{@api_v4}/institutional-ownership/industry/portfolio-holdings-summary",
-      Map.merge(%{cik: cik, date: date}, params)
+      Map.merge(%{cik: cik, date: date}, opts)
     )
   end
 
   @doc """
   Fetches insider trading transactions from the FMP API.
 
-  ## Parameters
+  ## Optional
 
   * `symbol` - The symbol of the stock.
   * `companyCik` - The CIK of the company.
@@ -3647,8 +3646,8 @@ defmodule FMP do
   ]
   ```
   """
-  def insider_trading(params \\ %{}),
-    do: get("#{@api_v4}/insider-trading", params)
+  def insider_trading(opts \\ %{}),
+    do: get("#{@api_v4}/insider-trading", opts)
 
   @doc """
   Fetches insider trading transactions types from the FMP API.
@@ -3680,7 +3679,7 @@ defmodule FMP do
   @doc """
   Fetches a commitment of traders report from and to a date from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `from` - The from date.
   * `to` - The to date.
@@ -3750,7 +3749,7 @@ defmodule FMP do
   @doc """
   Fetches a commitment of traders report from a symbol from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol.
 
@@ -3819,7 +3818,7 @@ defmodule FMP do
   @doc """
   Fetches a commitment of traders report analysis from and to a date from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `from` - The from date.
   * `to` - The to date.
@@ -3855,7 +3854,7 @@ defmodule FMP do
   @doc """
   Fetches a commitment of traders report analysis from a symbol from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol.
 
@@ -3890,7 +3889,7 @@ defmodule FMP do
   @doc """
   Fetches a list of senate trading for a symbol from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
@@ -3921,7 +3920,7 @@ defmodule FMP do
   @doc """
   Fetches a list of senate disclosures for a symbol from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
@@ -3951,7 +3950,7 @@ defmodule FMP do
   @doc """
   Fetches ciks by name from the FMP API.
 
-  ## Parameters
+  ## Optional
 
   * `name` - The name of the company.
   * `page` - The page number.
@@ -3967,13 +3966,13 @@ defmodule FMP do
   ]
   ```
   """
-  def cik_mapper_name(params \\ %{}),
-    do: get("#{@api_v4}/mapper-cik-name", params)
+  def cik_mapper_name(opts \\ %{}),
+    do: get("#{@api_v4}/mapper-cik-name", opts)
 
   @doc """
   Fetches ciks by symbol from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
@@ -4168,7 +4167,7 @@ defmodule FMP do
   @doc """
   Fetches mutual funds by name from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `name` - The name of the mutual fund.
 
@@ -4200,7 +4199,7 @@ defmodule FMP do
   @doc """
   Fetches mutual funds holdings from the FMP API.
 
-  ## Parameters
+  ## Optional
 
   * `symbol` - The symbol of the mutual fund.
   * `cik` - The CIK of the mutual fund.
@@ -4238,13 +4237,13 @@ defmodule FMP do
   ]
   ```
   """
-  def mutual_fund_portfolio_holdings(params \\ %{}),
-    do: get("#{@api_v4}/mutual-fund-holdings", params)
+  def mutual_fund_portfolio_holdings(opts \\ %{}),
+    do: get("#{@api_v4}/mutual-fund-holdings", opts)
 
   @doc """
   Fetches mutual funds portfolio dates from the FMP API.
 
-  ## Parameters
+  ## Optional
 
   * `symbol` - The symbol of the mutual fund.
   * `cik` - The CIK of the mutual fund.
@@ -4258,8 +4257,8 @@ defmodule FMP do
   ]
   ```
   """
-  def mutual_fund_portfolio_dates(params \\ %{}),
-    do: get("#{@api_v4}/mutual-fund-holdings/portfolio-date", params)
+  def mutual_fund_portfolio_dates(opts \\ %{}),
+    do: get("#{@api_v4}/mutual-fund-holdings/portfolio-date", opts)
 
   @doc """
   Fetches the symbols of all ETFs from the FMP API.
@@ -4284,7 +4283,7 @@ defmodule FMP do
   @doc """
   Fetches information about an ETF from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the ETF.
 
@@ -4335,7 +4334,7 @@ defmodule FMP do
   @doc """
   Fetches the portfolio dates of an ETF from the FMP API.
 
-  ## Parameters
+  ## Optional
 
   * `symbol` - The symbol of the ETF.
   * `cik` - The CIK of the ETF.
@@ -4349,13 +4348,13 @@ defmodule FMP do
   ]
   ```
   """
-  def etf_portfolio_dates(params \\ %{}),
-    do: get("#{@api_v4}/etf-holdings/portfolio-date", params)
+  def etf_portfolio_dates(opts \\ %{}),
+    do: get("#{@api_v4}/etf-holdings/portfolio-date", opts)
 
   @doc """
   Fetches the holdings of an ETF from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the ETF.
 
@@ -4381,7 +4380,7 @@ defmodule FMP do
   @doc """
   Fetches the historical holdings of an ETF from the FMP API.
 
-  ## Parameters
+  ## Optional
 
   * `symbol` - The symbol of the ETF.
   * `ciK` - The CIK of the ETF.
@@ -4419,12 +4418,12 @@ defmodule FMP do
   ]
   ```
   """
-  def etf_holdings_historical(params \\ %{}), do: get("#{@api_v4}/etf-holdings", params)
+  def etf_holdings_historical(opts \\ %{}), do: get("#{@api_v4}/etf-holdings", opts)
 
   @doc """
   Fetches the stock exposure of an ETF from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the ETF.
 
@@ -4447,7 +4446,7 @@ defmodule FMP do
   @doc """
   Fetches the country weightings of an ETF from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the ETF.
 
@@ -4467,7 +4466,7 @@ defmodule FMP do
   @doc """
   Fetches the sector weightings of an ETF from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the ETF.
 
@@ -4487,11 +4486,11 @@ defmodule FMP do
   @doc """
   Fetches sectors PE ratios for a given date from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `date` - The date of the PE ratios.
 
-  ## Parameters
+  ## Optional
 
   * `exchange` - The exchange of the PE ratios.
 
@@ -4508,17 +4507,17 @@ defmodule FMP do
   ]
   ```
   """
-  def pe_ratios_sectors(date, params \\ %{}),
-    do: get("#{@api_v4}/sector_price_earning_ratio", Map.merge(%{date: date}, params))
+  def pe_ratios_sectors(date, opts \\ %{}),
+    do: get("#{@api_v4}/sector_price_earning_ratio", Map.merge(%{date: date}, opts))
 
   @doc """
   Fetches industries PE ratios for a given date from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `date` - The date of the PE ratios.
 
-  ## Parameters
+  ## Optional
 
   * `exchange` - The exchange of the PE ratios.
 
@@ -4535,8 +4534,8 @@ defmodule FMP do
   ]
   ```
   """
-  def pe_ratios_industries(date, params \\ %{}),
-    do: get("#{@api_v4}/industry_price_earning_ratio", Map.merge(%{date: date}, params))
+  def pe_ratios_industries(date, opts \\ %{}),
+    do: get("#{@api_v4}/industry_price_earning_ratio", Map.merge(%{date: date}, opts))
 
   @doc """
   Fetches sectors performance from the FMP API.
@@ -4557,7 +4556,7 @@ defmodule FMP do
   @doc """
   Fetches historical sectors performance from the FMP API.
 
-  ## Parameters
+  ## Optional
 
   * `limit` - The limit of the historical sectors performance.
 
@@ -4585,8 +4584,8 @@ defmodule FMP do
   ]
   ```
   """
-  def sectors_performance_historical(params \\ %{}),
-    do: get("#{@api_v3}/historical-sectors-performance", params)
+  def sectors_performance_historical(opts \\ %{}),
+    do: get("#{@api_v3}/historical-sectors-performance", opts)
 
   @doc """
   Fetches top gainers from the FMP API.
@@ -4666,7 +4665,7 @@ defmodule FMP do
   @doc """
   Fetches treasury rates from the FMP API.
 
-  ## Parameters
+  ## Optional
 
   * `from` - The start date of the treasury rates.
   * `to` - The end date of the treasury rates.
@@ -4693,16 +4692,16 @@ defmodule FMP do
   ]
   ```
   """
-  def treasury_rates(params \\ %{}), do: get("#{@api_v4}/treasury", params)
+  def treasury_rates(opts \\ %{}), do: get("#{@api_v4}/treasury", opts)
 
   @doc """
   Fetches economic indicators from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `name` - The name of the economic indicator.
 
-  ## Parameters
+  ## Optional
 
   * `from` - The start date of the economic indicator.
   * `to` - The end date of the economic indicator.
@@ -4718,13 +4717,13 @@ defmodule FMP do
   ]
   ```
   """
-  def ecomonic_indicators(name, params \\ %{}),
-    do: get("#{@api_v4}/economic", Map.merge(%{name: name}, params))
+  def ecomonic_indicators(name, opts \\ %{}),
+    do: get("#{@api_v4}/economic", Map.merge(%{name: name}, opts))
 
   @doc """
   Fetches crowdfunding offerings from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `cik` - The CIK of the company.
 
@@ -4790,7 +4789,7 @@ defmodule FMP do
   @doc """
   Fetches fundraising from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `cik` - The CIK of the company.
 
@@ -4851,7 +4850,7 @@ defmodule FMP do
   @doc """
   Fetches the list of FMP articles from the FMP API.
 
-  ## Parameters
+  ## Optional
 
   * `page` - The page number.
   * `size` - The size of the pages.
@@ -4892,12 +4891,12 @@ defmodule FMP do
   }
   ```
   """
-  def fmp_articles(params \\ %{}), do: get("#{@api_v3}/fmp/articles", params)
+  def fmp_articles(opts \\ %{}), do: get("#{@api_v3}/fmp/articles", opts)
 
   @doc """
   Fetches the list of stock news from the FMP API.
 
-  ## Parameters
+  ## Optional
 
   * `tickers` - The list of tickers.
   * `limit` - The number of news to return.
@@ -4919,12 +4918,12 @@ defmodule FMP do
   ]
   ```
   """
-  def news_stock(params \\ %{}), do: get("#{@api_v3}/stock_news", params)
+  def news_stock(opts \\ %{}), do: get("#{@api_v3}/stock_news", opts)
 
   @doc """
   Fetches the list of crypto news from the FMP API.
 
-  ## Parameters
+  ## Optional
 
   * `symbol` - The symbol of the crypto.
   * `page` - The page number.
@@ -4945,12 +4944,12 @@ defmodule FMP do
   ]
   ```
   """
-  def news_crypto(params \\ %{}), do: get("#{@api_v4}/crypto_news", params)
+  def news_crypto(opts \\ %{}), do: get("#{@api_v4}/crypto_news", opts)
 
   @doc """
   Fetches the list of forex news from the FMP API.
 
-  ## Parameters
+  ## Optional
 
   * `symbol` - The symbol of the crypto.
   * `page` - The page number.
@@ -4971,12 +4970,12 @@ defmodule FMP do
   ]
   ```
   """
-  def news_forex(params \\ %{}), do: get("#{@api_v4}/forex_news", params)
+  def news_forex(opts \\ %{}), do: get("#{@api_v4}/forex_news", opts)
 
   @doc """
   Fetches the list of general news from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `page` - The page number.
 
@@ -5000,7 +4999,7 @@ defmodule FMP do
   @doc """
   Fetches the list of press releases from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
   * `page` - The page number.
@@ -5024,11 +5023,11 @@ defmodule FMP do
   @doc """
   Fetches the list of sec filings of a company from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `symbol` - The symbol of the company.
 
-  ## Parameters
+  ## Optional
 
   * `type` - The type of the filing.
   * `page` - The page number.
@@ -5049,12 +5048,12 @@ defmodule FMP do
   ]
   ```
   """
-  def sec_filings(symbol, params \\ %{}), do: get("#{@api_v3}/sec_filings/#{symbol}", params)
+  def sec_filings(symbol, opts \\ %{}), do: get("#{@api_v3}/sec_filings/#{symbol}", opts)
 
   @doc """
   Fetches the SEC rss feed from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `page` - The page number.
 
@@ -5079,7 +5078,7 @@ defmodule FMP do
   @doc """
   Fetches the insider trading rss feed from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `page` - The page number.
 
@@ -5102,7 +5101,7 @@ defmodule FMP do
   @doc """
   Fetches the price targets rss feed from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `page` - The page number.
 
@@ -5113,7 +5112,7 @@ defmodule FMP do
   @doc """
   Fetches the upgrades and downgrades rss feed from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `page` - The page number.
 
@@ -5143,7 +5142,7 @@ defmodule FMP do
   @doc """
   Fetches the stock news sentiment rss feed from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `page` - The page number.
 
@@ -5169,7 +5168,7 @@ defmodule FMP do
   @doc """
   Fetches the institutional ownership rss feed from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `page` - The page number.
 
@@ -5192,7 +5191,7 @@ defmodule FMP do
   @doc """
   Fetches the senate trading rss feed from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `page` - The page number.
 
@@ -5224,7 +5223,7 @@ defmodule FMP do
   @doc """
   Fetches the senate disclosures rss feed from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `page` - The page number.
 
@@ -5255,7 +5254,7 @@ defmodule FMP do
   @doc """
   Fetches the mergers and acquisitions rss feed from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `page` - The page number.
 
@@ -5283,7 +5282,7 @@ defmodule FMP do
   @doc """
   Fetches the crowdfunding offerings rss feed from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `page` - The page number.
 
@@ -5350,7 +5349,7 @@ defmodule FMP do
   @doc """
   Fetches the fundraising rss feed from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `page` - The page number.
 
@@ -5409,11 +5408,11 @@ defmodule FMP do
   @doc """
   Search via ticker and company name from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `query` - The query to search for.
 
-  ## Parameters
+  ## Optional
 
   * `limit` - The number of results to return.
   * `exchange` - The exchange to search in.
@@ -5432,17 +5431,17 @@ defmodule FMP do
   ]
   ```
   """
-  def search(query, params \\ %{}),
-    do: get("#{@api_v3}/search", Map.merge(%{query: query}, params))
+  def search(query, opts \\ %{}),
+    do: get("#{@api_v3}/search", Map.merge(%{query: query}, opts))
 
   @doc """
   Search via ticker from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `query` - The query to search for.
 
-  ## Parameters
+  ## Optional
 
   * `limit` - The number of results to return.
   * `exchange` - The exchange to search in.
@@ -5461,17 +5460,17 @@ defmodule FMP do
   ]
   ```
   """
-  def search_ticker(query, params \\ %{}),
-    do: get("#{@api_v3}/search-ticker", Map.merge(%{query: query}, params))
+  def search_ticker(query, opts \\ %{}),
+    do: get("#{@api_v3}/search-ticker", Map.merge(%{query: query}, opts))
 
   @doc """
   Search via company name from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `query` - The query to search for.
 
-  ## Parameters
+  ## Optional
 
   * `limit` - The number of results to return.
   * `exchange` - The exchange to search in.
@@ -5490,13 +5489,13 @@ defmodule FMP do
   ]
   ```
   """
-  def search_name(query, params \\ %{}),
-    do: get("#{@api_v3}/search-name", Map.merge(%{query: query}, params))
+  def search_name(query, opts \\ %{}),
+    do: get("#{@api_v3}/search-name", Map.merge(%{query: query}, opts))
 
   @doc """
   Search for institutions from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `name` - The name of the institution to search for.
 
@@ -5516,7 +5515,7 @@ defmodule FMP do
   @doc """
   Search for mergers and acquisitions from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `name` - The name of the merger or acquisition to search for.
 
@@ -5542,7 +5541,7 @@ defmodule FMP do
   @doc """
   Search for crowdfunding offerings from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `name` - The name of the crowdfunding offering to search for.
 
@@ -5564,7 +5563,7 @@ defmodule FMP do
   @doc """
   Search for fundraising from the FMP API.
 
-  ## Inputs
+  ## Required
 
   * `name` - The name of the fundraising to search for.
 
@@ -5586,7 +5585,7 @@ defmodule FMP do
   @doc """
   Screen stocks from the FMP API.
 
-  ## Parameters
+  ## Optional
 
   * `marketCapMoreThan` - The market cap to screen for.
   * `marketCapLowerThan` - The market cap to screen for.
@@ -5628,7 +5627,7 @@ defmodule FMP do
   ]
   ```
   """
-  def screener(params \\ %{}), do: get("#{@api_v3}/stock-screener", params)
+  def screener(opts \\ %{}), do: get("#{@api_v3}/stock-screener", opts)
 
   @doc false
   defp get(url, params \\ %{}) do
