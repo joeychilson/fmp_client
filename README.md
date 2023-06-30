@@ -9,7 +9,7 @@ An Elixir-based HTTP Client for financialmodelingprep.com
 ```elixir
 def deps do
   [
-    {:fmp_client, "~> 0.1.1"}
+    {:fmp_client, "~> 0.2.0"}
   ]
 end
 ```
