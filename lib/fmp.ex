@@ -5632,12 +5632,8 @@ defmodule FMP do
   @doc false
   defp get(url, params \\ %{}) do
     api_key = Application.get_env(:fmp_client, :api_key)
-    url = if params == %{}, do: url, else: "#{url}?#{URI.encode_query(params)}"
-
-    url =
-      if String.contains?(url, "?"),
-        do: "#{url}&apikey=#{api_key}",
-        else: "#{url}?apikey=#{api_key}"
+    params = Map.put(params, :apikey, api_key)
+    url = "#{url}?#{URI.encode_query(params)}"
 
     case HTTPoison.get(url) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
