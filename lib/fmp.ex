@@ -1398,7 +1398,8 @@ defmodule FMP do
 
   * `symbol` - The symbol of the company.
   """
-  def senate_trading(symbol), do: get("#{@api_v4}/senate-trading", %{symbol: symbol})
+  def senate_trading(symbol),
+    do: get("#{@api_v4}/senate-trading", Keyword.put([], :symbol, symbol))
 
   @doc """
   Fetches a list of senate disclosures for a symbol from the FMP API.
@@ -1407,7 +1408,8 @@ defmodule FMP do
 
   * `symbol` - The symbol of the company.
   """
-  def senate_disclosures(symbol), do: get("#{@api_v4}/senate-disclosure", %{symbol: symbol})
+  def senate_disclosures(symbol),
+    do: get("#{@api_v4}/senate-disclosure", Keyword.put([], :symbol, symbol))
 
   @doc """
   Fetches ciks by name from the FMP API.
@@ -1997,10 +1999,7 @@ defmodule FMP do
   @doc false
   defp get(url, params \\ []) do
     api_key = Application.get_env(:fmp_client, :api_key)
-
-    params =
-      params
-      |> Keyword.put_new(:apikey, api_key)
+    params = params |> Keyword.put_new(:apikey, api_key)
 
     case Req.get(url, params: params, decode_json: [keys: :atoms]) do
       {:ok, %Req.Response{status: 200, body: body}} ->
