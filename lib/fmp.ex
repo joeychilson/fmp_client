@@ -382,11 +382,7 @@ defmodule FMP do
   * `symbol` - The symbol of the company.
   """
   def product_segmentation(symbol) do
-    params =
-      []
-      |> Keyword.put(:symbol, symbol)
-      |> Keyword.put(:structure, "flat")
-
+    params = Keyword.new([{:symbol, symbol}, {:structure, "flat"}])
     resp = get("#{@api_v4}/revenue-product-segmentation", params)
 
     case resp do
@@ -424,11 +420,7 @@ defmodule FMP do
   * `symbol` - The symbol of the company.
   """
   def geographic_segmentation(symbol) do
-    params =
-      []
-      |> Keyword.put(:symbol, symbol)
-      |> Keyword.put(:structure, "flat")
-
+    params = Keyword.new([{:symbol, symbol}, {:structure, "flat"}])
     resp = get("#{@api_v4}/revenue-geographic-segmentation", params)
 
     case resp do
@@ -989,11 +981,7 @@ defmodule FMP do
   * `page` - The page of the results to fetch.
   """
   def social_sentiment(symbol, page \\ 0) do
-    params =
-      []
-      |> Keyword.put(:symbol, symbol)
-      |> Keyword.put(:page, page)
-
+    params = Keyword.new([{:symbol, symbol}, {:page, page}])
     get("#{@api_v4}/historical/social-sentiment", params)
   end
 
@@ -1067,10 +1055,7 @@ defmodule FMP do
   * `quarter` - The quarter of the earnings call transcript.
   """
   def earnings_call_transcript(symbol, year, quarter) do
-    params =
-      []
-      |> Keyword.put(:year, year)
-      |> Keyword.put(:quarter, quarter)
+    params = Keyword.new([{:year, year}, {:quarter, quarter}])
 
     case get("#{@api_v3}/earning_call_transcript/#{symbol}", params) do
       {:ok, resp} -> {:ok, hd(resp)}
@@ -1306,9 +1291,11 @@ defmodule FMP do
     cik = String.pad_leading(cik, 10, "0")
 
     params =
-      opts
-      |> Keyword.put(:cik, cik)
-      |> Keyword.put(:date, date)
+      Keyword.new([
+        {:cik, cik},
+        {:date, date}
+      ])
+      |> Keyword.merge(opts)
 
     get("#{@api_v4}/institutional-ownership/industry/portfolio-holdings-summary", params)
   end
@@ -1346,11 +1333,7 @@ defmodule FMP do
   * `to` - The to date.
   """
   def commitment_of_traders_report(from, to) do
-    params =
-      []
-      |> Keyword.put(:from, from)
-      |> Keyword.put(:to, to)
-
+    params = Keyword.new([{:from, from}, {:to, to}])
     get("#{@api_v4}/commitment_of_traders_report", params)
   end
 
@@ -1373,11 +1356,7 @@ defmodule FMP do
   * `to` - The to date.
   """
   def commitment_of_traders_report_analysis(from, to) do
-    params =
-      []
-      |> Keyword.put(:from, from)
-      |> Keyword.put(:to, to)
-
+    params = Keyword.new([{:from, from}, {:to, to}])
     get("#{@api_v4}/commitment_of_traders_report_analysis", params)
   end
 
